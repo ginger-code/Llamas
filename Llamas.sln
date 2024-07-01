@@ -1,0 +1,54 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{81CAD652-C701-43CF-A427-3BB0ECD49D9F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{33B1061B-EC2E-4029-BECA-BA79AA988059}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Llamas.Abstractions", "src\Llamas.Abstractions\Llamas.Abstractions.csproj", "{04F312E9-E441-4A08-A968-534573421418}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Llamas", "src\Llamas\Llamas.csproj", "{87F28C9C-2B2A-4877-95FE-D4B2F77AA2CF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Llamas.Container", "src\Llamas.Container\Llamas.Container.csproj", "{A6FCCD9E-DF5F-4BD4-B787-7CCE5219F978}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Llamas.Test", "test\Llamas.Test\Llamas.Test.csproj", "{B3E12852-2893-45CF-813F-FFD0C2060DB5}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "files", "files", "{1E401FFB-00B8-4FB1-A399-2BCA39253526}"
+	ProjectSection(SolutionItems) = preProject
+		.gitignore = .gitignore
+		README.md = README.md
+		LICENSE = LICENSE
+		Llamas.targets = Llamas.targets
+		ollama.png = ollama.png
+		pack.ps1 = pack.ps1
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{04F312E9-E441-4A08-A968-534573421418} = {81CAD652-C701-43CF-A427-3BB0ECD49D9F}
+		{87F28C9C-2B2A-4877-95FE-D4B2F77AA2CF} = {81CAD652-C701-43CF-A427-3BB0ECD49D9F}
+		{A6FCCD9E-DF5F-4BD4-B787-7CCE5219F978} = {81CAD652-C701-43CF-A427-3BB0ECD49D9F}
+		{B3E12852-2893-45CF-813F-FFD0C2060DB5} = {33B1061B-EC2E-4029-BECA-BA79AA988059}
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{04F312E9-E441-4A08-A968-534573421418}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{04F312E9-E441-4A08-A968-534573421418}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{04F312E9-E441-4A08-A968-534573421418}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{04F312E9-E441-4A08-A968-534573421418}.Release|Any CPU.Build.0 = Release|Any CPU
+		{87F28C9C-2B2A-4877-95FE-D4B2F77AA2CF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{87F28C9C-2B2A-4877-95FE-D4B2F77AA2CF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{87F28C9C-2B2A-4877-95FE-D4B2F77AA2CF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{87F28C9C-2B2A-4877-95FE-D4B2F77AA2CF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A6FCCD9E-DF5F-4BD4-B787-7CCE5219F978}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A6FCCD9E-DF5F-4BD4-B787-7CCE5219F978}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A6FCCD9E-DF5F-4BD4-B787-7CCE5219F978}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A6FCCD9E-DF5F-4BD4-B787-7CCE5219F978}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B3E12852-2893-45CF-813F-FFD0C2060DB5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B3E12852-2893-45CF-813F-FFD0C2060DB5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B3E12852-2893-45CF-813F-FFD0C2060DB5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B3E12852-2893-45CF-813F-FFD0C2060DB5}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal

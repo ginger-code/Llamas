@@ -1,0 +1,19 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+    <Import Project="../../Llamas.targets"/>
+
+    <PropertyGroup>
+        <Title>Llamas.Abstractions</Title>
+        <PackageId>Llamas.Abstractions</PackageId>
+        <PackageTags>ollama, llm, llama, client, ai, generative, abstractions, llamas</PackageTags>
+        <Description>Abstractions for Llamas</Description>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute">
+            <_Parameter1>Llamas</_Parameter1>
+        </AssemblyAttribute>
+        <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute">
+            <_Parameter1>Llamas.Test</_Parameter1>
+        </AssemblyAttribute>
+    </ItemGroup> 
+</Project>

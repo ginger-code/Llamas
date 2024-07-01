@@ -1,0 +1,36 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <LangVersion>preview</LangVersion>
+        <Nullable>enable</Nullable>
+        <RootNamespace>Llamas</RootNamespace>
+    </PropertyGroup>
+
+    <PropertyGroup>
+        <Version>0.1.0</Version>
+        <AssemblyVersion>0.1.0</AssemblyVersion>
+        <Authors>Chris Davis</Authors>
+        <Company>ginger-code</Company>
+        <Copyright>Copyright (c) Chris Davis 2024</Copyright>
+        <PackageProjectUrl>https://github.com/ginger-code/Llamas</PackageProjectUrl>
+        <RepositoryUrl>https://github.com/ginger-code/Llamas</RepositoryUrl>
+        <RepositoryType>git</RepositoryType>
+        <PackageIcon>ollama.png</PackageIcon>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+        <IncludeSymbols>true</IncludeSymbols>
+        <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+        <PackageReadmeFile>README.md</PackageReadmeFile>
+        <PackageReleaseNotes>Initial release compatible with ollama on July 1, 2024</PackageReleaseNotes>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <None Include="README.md" Pack="true" PackagePath="/"/>
+        <None Include="../../ollama.png">
+            <Pack>True</Pack>
+            <PackagePath>/</PackagePath>
+            <Link>ollama.png</Link>
+        </None>
+    </ItemGroup>
+</Project>

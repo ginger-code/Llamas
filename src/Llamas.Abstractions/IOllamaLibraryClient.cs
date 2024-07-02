@@ -3,7 +3,7 @@ using Llamas.LibraryRetrieval;
 namespace Llamas;
 
 /// <summary>
-/// An Ollama library client implementation for retrieving information about models available to pull
+/// An Ollama library client implementation for retrieving information about models available to pull from https://ollama.com/library
 /// </summary>
 public interface IOllamaLibraryClient
 {

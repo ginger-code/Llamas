@@ -33,10 +33,10 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <None Include="SemVer" Pack="false">
+        <None Include="../../SemVer" Pack="false">
             <Link>SemVer</Link>
         </None>
-        <None Include="ChangeNotes" Pack="false">
+        <None Include="../../ChangeNotes" Pack="false">
             <Link>ChangeNotes</Link>
         </None>
         

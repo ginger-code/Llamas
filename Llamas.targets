@@ -8,7 +8,8 @@
     </PropertyGroup>
     
     <PropertyGroup>
-        <Dir>$([MSBuild]::ValueOrDefault('$(SolutionDir)', '$(ProjectDir)'))</Dir>
+        <DirBase>$([MSBuild]::ValueOrDefault('$(SolutionDir)', '$(ProjectDir)'))</DirBase>
+        <Dir>$([MSBuild]::ValueOrDefault('$(DirBase)', '.'))</Dir>
         <SemVer>$([System.IO.File]::ReadAllText('$(Dir)/SemVer').TrimEnd())</SemVer>
         <ChangeNotes>$([System.IO.File]::ReadAllText('$(Dir)/ChangeNotes').TrimEnd())</ChangeNotes>
     </PropertyGroup>

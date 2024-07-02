@@ -13,8 +13,15 @@ namespace Llamas;
 /// </summary>
 public interface IOllamaClient
 {
+    /// <summary>
     /// Blob functionality
+    /// </summary>
     IOllamaBlobClient Blobs { get; }
+
+    /// <summary>
+    /// Model library functionality
+    /// </summary>
+    IOllamaLibraryClient? Library { get; }
 
     /// <summary>
     /// Check whether the ollama server is online and responding

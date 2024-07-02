@@ -24,7 +24,7 @@ public record ModelOptions
         float? repeatPenalty = null,
         float? temperature = null,
         int? seed = null,
-        string? stop = null,
+        string[]? stop = null,
         float? tfsZ = null,
         int? numPredict = null,
         int? topK = null,
@@ -111,7 +111,7 @@ public record ModelOptions
     /// Multiple stop patterns may be set by specifying multiple separate stop parameters in a modelfile.
     /// </summary>
     [JsonPropertyName("stop"), JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-    public string? Stop { get; init; }
+    public string[]? Stop { get; init; }
 
     /// <summary>
     /// Tail free sampling is used to reduce the impact of less probable tokens from the output.

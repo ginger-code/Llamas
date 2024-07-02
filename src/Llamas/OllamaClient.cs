@@ -28,8 +28,15 @@ public sealed class OllamaClient : IOllamaClient
     /// </summary>
     private HttpClient HttpClient { get; }
 
+    /// <summary>
     /// Blob functionality
+    /// </summary>
     public IOllamaBlobClient Blobs { get; }
+
+    /// <summary>
+    /// Model library functionality
+    /// </summary>
+    public IOllamaLibraryClient? Library { get; } = null;
 
     #endregion
 

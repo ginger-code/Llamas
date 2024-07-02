@@ -18,10 +18,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "files", "files", "{1E401FFB
 		Llamas.targets = Llamas.targets
 		ollama.png = ollama.png
 		pack.ps1 = pack.ps1
-		.github\workflows\dotnet.yml = .github\workflows\dotnet.yml
+		.github\workflows\dotnet-publish.yml = .github\workflows\dotnet-publish.yml
 		..pre-commit-config.yaml = .pre-commit-config.yaml
 		SemVer = SemVer
 		ChangeNotes = ChangeNotes
+		.github\workflows\dotnet-test.yaml = .github\workflows\dotnet-test.yaml
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Llamas.Tests.Shared", "test\Llamas.Tests.Shared\Llamas.Tests.Shared.csproj", "{10930DE0-38D9-4570-BC00-E93A54851521}"

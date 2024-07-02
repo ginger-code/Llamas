@@ -8,8 +8,9 @@
     </PropertyGroup>
     
     <PropertyGroup>
-        <SemVer>$([System.IO.File]::ReadAllText('$(SolutionDir)/SemVer').TrimEnd())</SemVer>
-        <ChangeNotes>$([System.IO.File]::ReadAllText('$(SolutionDir)/ChangeNotes').TrimEnd())</ChangeNotes>
+        <Dir>$([MSBuild]::ValueOrDefault('$(SolutionDir)', '$(ProjectDir)'))</Dir>
+        <SemVer>$([System.IO.File]::ReadAllText('$(Dir)/SemVer').TrimEnd())</SemVer>
+        <ChangeNotes>$([System.IO.File]::ReadAllText('$(Dir)/ChangeNotes').TrimEnd())</ChangeNotes>
     </PropertyGroup>
     
     <PropertyGroup>
@@ -31,6 +32,13 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <None Include="SemVer" Pack="false">
+            <Link>SemVer</Link>
+        </None>
+        <None Include="ChangeNotes" Pack="false">
+            <Link>ChangeNotes</Link>
+        </None>
+        
         <None Include="README.md" Pack="true" PackagePath="/"/>
         <None Include="../../ollama.png">
             <Pack>True</Pack>

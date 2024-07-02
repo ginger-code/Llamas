@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics;
 using Llamas.Requests;
 
-namespace Llamas.Test.Integration.IOllamaClient;
+namespace Llamas.Tests.Integration.IOllamaClient;
 
 public abstract class ShowModelInfoTest
 {

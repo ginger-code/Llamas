@@ -23,6 +23,8 @@ jobs:
           dotnet build src/Llamas.Abstractions/Llamas.Abstractions.csproj -c Release
           dotnet build src/Llamas/Llamas.csproj -c Release
           dotnet build src/Llamas.Container/Llamas.Container.csproj -c Release
+    - name: Test
+      run: dotnet test test/Llamas.Tests.Unit/Llamas.Tests.Unit.csproj
     - name: Pack
       run: |
         dotnet pack src/Llamas.Abstractions/Llamas.Abstractions.csproj --include-source -c Release -o packed --no-build

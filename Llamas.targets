@@ -6,10 +6,15 @@
         <Nullable>enable</Nullable>
         <RootNamespace>Llamas</RootNamespace>
     </PropertyGroup>
-
+    
     <PropertyGroup>
-        <Version>0.1.0</Version>
-        <AssemblyVersion>0.1.0</AssemblyVersion>
+        <SemVer>$([System.IO.File]::ReadAllText('$(SolutionDir)/SemVer').TrimEnd())</SemVer>
+        <ChangeNotes>$([System.IO.File]::ReadAllText('$(SolutionDir)/ChangeNotes').TrimEnd())</ChangeNotes>
+    </PropertyGroup>
+    
+    <PropertyGroup>
+        <Version>$(SemVer)</Version>
+        <AssemblyVersion>$(SemVer)</AssemblyVersion>
         <Authors>Chris Davis</Authors>
         <Company>ginger-code</Company>
         <Copyright>Copyright (c) Chris Davis 2024</Copyright>
@@ -22,7 +27,7 @@
         <IncludeSymbols>true</IncludeSymbols>
         <SymbolPackageFormat>snupkg</SymbolPackageFormat>
         <PackageReadmeFile>README.md</PackageReadmeFile>
-        <PackageReleaseNotes>Initial release compatible with ollama on July 1, 2024</PackageReleaseNotes>
+        <PackageReleaseNotes>$(ChangeNotes)</PackageReleaseNotes>
     </PropertyGroup>
 
     <ItemGroup>

@@ -1,4 +1,4 @@
-namespace Llamas.Test;
+﻿namespace Llamas.Tests;
 
 /// <summary>
 /// A mock stream simulating a file stream of arbitrary size.

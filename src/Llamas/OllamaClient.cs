@@ -296,3 +296,8 @@ public sealed class OllamaClient : IOllamaClient
 
     #endregion
 }
+
+/// <summary>
+///Internal collection type for retrieving local models
+/// </summary>
+file sealed record LocalModels(LocalModel[] Models);

@@ -1,10 +1,10 @@
-﻿namespace Llamas.Test.Integration.IOllamaClient;
+﻿namespace Llamas.Tests.Integration.IOllamaClient;
 
-public abstract class ListLocalModelsTest
+public abstract class ListRunningModelsTest
 {
     public static async Task Run(Llamas.IOllamaClient client, string modelName)
     {
-        var models = await client.ListLocalModels();
+        var models = await client.ListRunningModels();
         Assert.Multiple(() =>
         {
             Assert.That(models, Is.Not.Null.And.Length.EqualTo(1));

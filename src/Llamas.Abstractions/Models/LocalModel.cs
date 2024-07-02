@@ -28,8 +28,3 @@ public record LocalModel
     [JsonPropertyName("details"), JsonRequired]
     public required ModelInfoDetails Details { get; init; }
 }
-
-/// <summary>
-///Internal collection type for retrieving local models
-/// </summary>
-internal record LocalModels(LocalModel[] Models);

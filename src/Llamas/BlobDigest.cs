@@ -7,7 +7,7 @@ namespace Llamas;
 /// <summary>
 /// Methods for calculating SHA256 digests of data
 /// </summary>
-internal static class BlobDigest
+public static class BlobDigest
 {
     /// <summary>
     /// Calculate the SHA256 digest of a stream of data

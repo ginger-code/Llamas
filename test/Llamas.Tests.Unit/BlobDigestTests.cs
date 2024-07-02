@@ -1,6 +1,6 @@
 using System.Text;
 
-namespace Llamas.Test.Unit;
+namespace Llamas.Tests.Unit;
 
 public sealed class BlobDigestTests
 {

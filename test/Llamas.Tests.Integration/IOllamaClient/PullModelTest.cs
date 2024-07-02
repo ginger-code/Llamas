@@ -2,7 +2,7 @@
 using Llamas.Requests;
 using Llamas.Responses;
 
-namespace Llamas.Test.Integration.IOllamaClient;
+namespace Llamas.Tests.Integration.IOllamaClient;
 
 public abstract class PullModelTest
 {

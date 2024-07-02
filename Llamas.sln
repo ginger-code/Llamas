@@ -10,8 +10,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Llamas", "src\Llamas\Llamas
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Llamas.Container", "src\Llamas.Container\Llamas.Container.csproj", "{A6FCCD9E-DF5F-4BD4-B787-7CCE5219F978}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Llamas.Test", "test\Llamas.Test\Llamas.Test.csproj", "{B3E12852-2893-45CF-813F-FFD0C2060DB5}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "files", "files", "{1E401FFB-00B8-4FB1-A399-2BCA39253526}"
 	ProjectSection(SolutionItems) = preProject
 		.gitignore = .gitignore
@@ -22,7 +20,15 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "files", "files", "{1E401FFB
 		pack.ps1 = pack.ps1
 		.github\workflows\dotnet.yml = .github\workflows\dotnet.yml
 		..pre-commit-config.yaml = .pre-commit-config.yaml
+		SemVer = SemVer
+		ChangeNotes = ChangeNotes
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Llamas.Tests.Shared", "test\Llamas.Tests.Shared\Llamas.Tests.Shared.csproj", "{10930DE0-38D9-4570-BC00-E93A54851521}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Llamas.Tests.Unit", "test\Llamas.Tests.Unit\Llamas.Tests.Unit.csproj", "{E6437EC5-51DA-41E9-BEE4-0944261135F5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Llamas.Tests.Integration", "test\Llamas.Tests.Integration\Llamas.Tests.Integration.csproj", "{5805D46D-F1EC-419B-859E-A145CDDA0974}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,7 +39,9 @@ Global
 		{04F312E9-E441-4A08-A968-534573421418} = {81CAD652-C701-43CF-A427-3BB0ECD49D9F}
 		{87F28C9C-2B2A-4877-95FE-D4B2F77AA2CF} = {81CAD652-C701-43CF-A427-3BB0ECD49D9F}
 		{A6FCCD9E-DF5F-4BD4-B787-7CCE5219F978} = {81CAD652-C701-43CF-A427-3BB0ECD49D9F}
-		{B3E12852-2893-45CF-813F-FFD0C2060DB5} = {33B1061B-EC2E-4029-BECA-BA79AA988059}
+		{10930DE0-38D9-4570-BC00-E93A54851521} = {33B1061B-EC2E-4029-BECA-BA79AA988059}
+		{E6437EC5-51DA-41E9-BEE4-0944261135F5} = {33B1061B-EC2E-4029-BECA-BA79AA988059}
+		{5805D46D-F1EC-419B-859E-A145CDDA0974} = {33B1061B-EC2E-4029-BECA-BA79AA988059}
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{04F312E9-E441-4A08-A968-534573421418}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -48,9 +56,17 @@ Global
 		{A6FCCD9E-DF5F-4BD4-B787-7CCE5219F978}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A6FCCD9E-DF5F-4BD4-B787-7CCE5219F978}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A6FCCD9E-DF5F-4BD4-B787-7CCE5219F978}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B3E12852-2893-45CF-813F-FFD0C2060DB5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B3E12852-2893-45CF-813F-FFD0C2060DB5}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B3E12852-2893-45CF-813F-FFD0C2060DB5}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B3E12852-2893-45CF-813F-FFD0C2060DB5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{10930DE0-38D9-4570-BC00-E93A54851521}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{10930DE0-38D9-4570-BC00-E93A54851521}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{10930DE0-38D9-4570-BC00-E93A54851521}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{10930DE0-38D9-4570-BC00-E93A54851521}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E6437EC5-51DA-41E9-BEE4-0944261135F5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E6437EC5-51DA-41E9-BEE4-0944261135F5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E6437EC5-51DA-41E9-BEE4-0944261135F5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E6437EC5-51DA-41E9-BEE4-0944261135F5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5805D46D-F1EC-419B-859E-A145CDDA0974}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5805D46D-F1EC-419B-859E-A145CDDA0974}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5805D46D-F1EC-419B-859E-A145CDDA0974}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5805D46D-F1EC-419B-859E-A145CDDA0974}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

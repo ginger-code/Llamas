@@ -21,6 +21,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "files", "files", "{1E401FFB
 		ollama.png = ollama.png
 		pack.ps1 = pack.ps1
 		.github\workflows\dotnet.yml = .github\workflows\dotnet.yml
+		..pre-commit-config.yaml = .pre-commit-config.yaml
 	EndProjectSection
 EndProject
 Global

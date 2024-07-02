@@ -10,10 +10,8 @@ on:
     branches: [ "master" ]
 
 jobs:
-  build:
-
+  publish:
     runs-on: ubuntu-latest
-
     steps:
     - uses: actions/checkout@v4
     - name: Setup .NET
@@ -33,6 +31,6 @@ jobs:
         dotnet pack src/Llamas/Llamas.csproj --include-source -c Release -o packed --no-build
         dotnet pack src/Llamas.Container/Llamas.Container.csproj --include-source -c Release -o packed --no-build
     - name: Push Packages
-      run: dotnet nuget push ./packed/*.nupkg --skip-duplicate --no-symbols true
+      run: dotnet nuget push ./packed/*.nupkg --skip-duplicate --no-symbols --source https://api.nuget.org/v3/index.json
     - name: Push Symbols
-      run: dotnet nuget push ./packed/*.snupkg --skip-duplicate
+      run: dotnet nuget push ./packed/*.snupkg --skip-duplicate --source https://api.nuget.org/v3/index.json

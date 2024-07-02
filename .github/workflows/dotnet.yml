@@ -18,8 +18,6 @@ jobs:
       uses: actions/setup-dotnet@v4
       with:
         dotnet-version: 8.0.x
-      env:
-          NUGET_AUTH_TOKEN: ${{secrets.NUGET_TOKEN}}    
     - name: Build
       run: |
           dotnet build src/Llamas.Abstractions/Llamas.Abstractions.csproj -c Release
@@ -31,6 +29,6 @@ jobs:
         dotnet pack src/Llamas/Llamas.csproj --include-source -c Release -o packed --no-build
         dotnet pack src/Llamas.Container/Llamas.Container.csproj --include-source -c Release -o packed --no-build
     - name: Push Packages
-      run: dotnet nuget push ./packed/*.nupkg --skip-duplicate --no-symbols --source https://api.nuget.org/v3/index.json
+      run: dotnet nuget push ./packed/*.nupkg --skip-duplicate --no-symbols --source https://api.nuget.org/v3/index.json -k ${{secrets.NUGET_TOKEN}}
     - name: Push Symbols
-      run: dotnet nuget push ./packed/*.snupkg --skip-duplicate --source https://api.nuget.org/v3/index.json
+      run: dotnet nuget push ./packed/*.snupkg --skip-duplicate --source https://api.nuget.org/v3/index.json -k ${{secrets.NUGET_TOKEN}}   

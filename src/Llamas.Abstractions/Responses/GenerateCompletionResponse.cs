@@ -20,19 +20,19 @@ public abstract record GenerateCompletionResponse
     {
         /// Model is the model name; it should be a name familiar to Ollama from the library at https://ollama.com/library
         [JsonPropertyName("model"), JsonRequired]
-        public required string Model { get; set; }
+        public required string Model { get; init; }
 
         /// When the completion was generated
         [JsonPropertyName("created_at"), JsonRequired]
-        public required DateTimeOffset CreatedAt { get; set; }
+        public required DateTimeOffset Created { get; init; }
 
         /// The next token in the response stream, empty if the last token in the response stream
         [JsonPropertyName("response"), JsonRequired]
-        public required string Response { get; set; }
+        public required string Response { get; init; }
 
         /// Should be false if this is not the last response
         [JsonPropertyName("done"), JsonRequired]
-        public required bool Done { get; set; }
+        public required bool Done { get; init; }
     }
 
     /// <summary>
@@ -42,19 +42,19 @@ public abstract record GenerateCompletionResponse
     {
         /// Model is the model name; it should be a name familiar to Ollama from the library at https://ollama.com/library
         [JsonPropertyName("model"), JsonRequired]
-        public required string Model { get; set; }
+        public required string Model { get; init; }
 
         /// When the completion was generated
         [JsonPropertyName("created_at"), JsonRequired]
-        public required DateTimeOffset CreatedAt { get; set; }
+        public required DateTimeOffset Created { get; init; }
 
         /// The next token in the response stream, empty if the last token in the response stream
         [JsonPropertyName("response"), JsonRequired]
-        public required string Response { get; set; }
+        public required string Response { get; init; }
 
         /// Should be true if this is the last response
         [JsonPropertyName("done"), JsonRequired]
-        public required bool Done { get; set; }
+        public required bool Done { get; init; }
 
         /// An encoding of the conversation used in this response, this can be sent in the next request to keep a conversational memory
         [JsonPropertyName("context"), JsonRequired]
@@ -127,7 +127,7 @@ public abstract record GenerateCompletionResponse
                         return new GenerateProgressResponse
                         {
                             Model = model,
-                            CreatedAt = createdAt.Value,
+                            Created = createdAt.Value,
                             Response = response,
                             Done = done.Value
                         };
@@ -150,7 +150,7 @@ public abstract record GenerateCompletionResponse
                         return new GenerateCompleteResponse
                         {
                             Model = model,
-                            CreatedAt = createdAt.Value,
+                            Created = createdAt.Value,
                             Response = response,
                             Done = done.Value,
                             Context = context,

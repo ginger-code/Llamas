@@ -21,11 +21,11 @@ public abstract record GenerateChatCompletionResponse
     {
         /// Model is the model name; it should be a name familiar to Ollama from the library at https://ollama.com/library
         [JsonPropertyName("model"), JsonRequired]
-        public required string Model { get; set; }
+        public required string Model { get; init; }
 
         /// When the completion was generated
         [JsonPropertyName("created_at"), JsonRequired]
-        public required DateTimeOffset CreatedAt { get; set; }
+        public required DateTimeOffset Created { get; init; }
 
         /// The next chunk of the generated chat completion
         [JsonPropertyName("message")]
@@ -33,7 +33,7 @@ public abstract record GenerateChatCompletionResponse
 
         /// Should be false if this is not the last response
         [JsonPropertyName("done"), JsonRequired]
-        public required bool Done { get; set; }
+        public required bool Done { get; init; }
     }
 
     /// <summary>
@@ -47,7 +47,7 @@ public abstract record GenerateChatCompletionResponse
 
         /// When the completion was generated
         [JsonPropertyName("created_at"), JsonRequired]
-        public required DateTimeOffset CreatedAt { get; init; }
+        public required DateTimeOffset Created { get; init; }
 
         /// Should be true if this is not the last response
         [JsonPropertyName("done"), JsonRequired]
@@ -119,7 +119,7 @@ public abstract record GenerateChatCompletionResponse
                         return new ChatProgressResponse
                         {
                             Model = model,
-                            CreatedAt = createdAt.Value,
+                            Created = createdAt.Value,
                             Message = message,
                             Done = done.Value
                         };
@@ -130,7 +130,7 @@ public abstract record GenerateChatCompletionResponse
                         return new ChatCompleteResponse
                         {
                             Model = model,
-                            CreatedAt = createdAt.Value,
+                            Created = createdAt.Value,
                             Done = done.Value,
                             TotalDuration = totalDuration,
                             LoadDuration = loadDuration,

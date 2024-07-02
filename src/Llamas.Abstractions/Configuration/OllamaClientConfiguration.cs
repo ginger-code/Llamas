@@ -16,7 +16,7 @@ public sealed record OllamaClientConfiguration
     /// <summary>
     /// Uri of the ollama server
     /// </summary>
-    internal Uri Uri => new($"http://{HostNameOrAddress}:{Port.Port}/");
+    public Uri Uri => new($"http://{HostNameOrAddress}:{Port.Port}/");
 
     /// <summary>
     /// Create a new instance of OllamaHostConfiguration

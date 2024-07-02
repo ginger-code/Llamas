@@ -1,6 +1,6 @@
 using Llamas.Responses;
 
-namespace Llamas.Test.Unit.Serialization;
+namespace Llamas.Tests.Unit.Serialization;
 
 [TestFixture, Parallelizable]
 public class GenerateCompletionSerializationTests

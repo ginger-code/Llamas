@@ -1,7 +1,7 @@
 ﻿using Llamas.Enums;
 using Llamas.Requests;
 
-namespace Llamas.Test.Integration.IOllamaClient;
+namespace Llamas.Tests.Integration.IOllamaClient;
 
 [TestFixture, Parallelizable]
 public class OllamaClientTests

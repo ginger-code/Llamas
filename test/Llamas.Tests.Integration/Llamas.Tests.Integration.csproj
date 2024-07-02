@@ -16,7 +16,6 @@
         <PackageReference Include="NUnit" Version="3.14.0"/>
         <PackageReference Include="NUnit.Analyzers" Version="3.9.0"/>
         <PackageReference Include="NUnit3TestAdapter" Version="4.5.0"/>
-        <PackageReference Include="Testcontainers" Version="3.9.0" />
     </ItemGroup>
 
     <ItemGroup>
@@ -24,8 +23,10 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\..\src\Llamas.Abstractions\Llamas.Abstractions.csproj" />
       <ProjectReference Include="..\..\src\Llamas.Container\Llamas.Container.csproj" />
       <ProjectReference Include="..\..\src\Llamas\Llamas.csproj" />
+      <ProjectReference Include="..\Llamas.Tests.Shared\Llamas.Tests.Shared.csproj" />
     </ItemGroup>
 
 </Project>

@@ -6,10 +6,17 @@
         <Nullable>enable</Nullable>
         <RootNamespace>Llamas</RootNamespace>
     </PropertyGroup>
-
+    
     <PropertyGroup>
-        <Version>0.1.0</Version>
-        <AssemblyVersion>0.1.0</AssemblyVersion>
+        <DirBase>$([MSBuild]::ValueOrDefault('$(SolutionDir)', '$(ProjectDir)'))</DirBase>
+        <Dir>$([MSBuild]::ValueOrDefault('$(DirBase)', '.'))</Dir>
+        <SemVer>$([System.IO.File]::ReadAllText('$(Dir)/SemVer').TrimEnd())</SemVer>
+        <ChangeNotes>$([System.IO.File]::ReadAllText('$(Dir)/ChangeNotes').TrimEnd())</ChangeNotes>
+    </PropertyGroup>
+    
+    <PropertyGroup>
+        <Version>$(SemVer)</Version>
+        <AssemblyVersion>$(SemVer)</AssemblyVersion>
         <Authors>Chris Davis</Authors>
         <Company>ginger-code</Company>
         <Copyright>Copyright (c) Chris Davis 2024</Copyright>
@@ -22,10 +29,17 @@
         <IncludeSymbols>true</IncludeSymbols>
         <SymbolPackageFormat>snupkg</SymbolPackageFormat>
         <PackageReadmeFile>README.md</PackageReadmeFile>
-        <PackageReleaseNotes>Initial release compatible with ollama on July 1, 2024</PackageReleaseNotes>
+        <PackageReleaseNotes>$(ChangeNotes)</PackageReleaseNotes>
     </PropertyGroup>
 
     <ItemGroup>
+        <None Include="SemVer" Pack="false">
+            <Link>SemVer</Link>
+        </None>
+        <None Include="ChangeNotes" Pack="false">
+            <Link>ChangeNotes</Link>
+        </None>
+        
         <None Include="README.md" Pack="true" PackagePath="/"/>
         <None Include="../../ollama.png">
             <Pack>True</Pack>

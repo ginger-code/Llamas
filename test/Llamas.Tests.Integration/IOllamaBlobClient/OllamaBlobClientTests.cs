@@ -1,6 +1,6 @@
 using Llamas.Enums;
 
-namespace Llamas.Test.Integration.IOllamaBlobClient;
+namespace Llamas.Tests.Integration.IOllamaBlobClient;
 
 [TestFixture, Parallelizable]
 public class OllamaBlobClientTests

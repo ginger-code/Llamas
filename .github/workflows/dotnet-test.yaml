@@ -1,0 +1,27 @@
+name: .NET
+
+on:
+  pull_request:
+    branches: [ "master" ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
+      - name: Build
+        run: |
+          dotnet build src/Llamas.Abstractions/Llamas.Abstractions.csproj -c Release
+          dotnet build src/Llamas/Llamas.csproj -c Release
+          dotnet build src/Llamas.Container/Llamas.Container.csproj -c Release
+      - name: Pack
+        run: |
+          dotnet pack src/Llamas.Abstractions/Llamas.Abstractions.csproj --include-source -c Release -o packed --no-build
+          dotnet pack src/Llamas/Llamas.csproj --include-source -c Release -o packed --no-build
+          dotnet pack src/Llamas.Container/Llamas.Container.csproj --include-source -c Release -o packed --no-build
+      - name: Test
+        run: dotnet test test/Llamas.Tests.Unit/Llamas.Tests.Unit.csproj

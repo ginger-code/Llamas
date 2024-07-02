@@ -3,7 +3,7 @@ using Llamas.Services;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
-namespace Llamas.Test.Integration;
+namespace Llamas.Tests.Integration;
 
 /// <summary>
 /// Root class for configuring shared resources for integration tests (e.g. hosted containerized services)

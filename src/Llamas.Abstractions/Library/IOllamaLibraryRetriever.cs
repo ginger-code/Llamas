@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Threading;
+using System.Threading.Tasks;
 using Llamas.Models;
 
 namespace Llamas.Library;
@@ -7,7 +8,7 @@ namespace Llamas.Library;
 /// <summary>
 /// An implementation of a method for retrieving information about models available to pull from https://ollama.com/library
 /// </summary>
-public interface IOllamaLibraryRetrievalMethod
+public interface IOllamaLibraryRetriever
 {
     /// <summary>
     /// Asynchronously enumerate all models available to pull
@@ -20,7 +21,7 @@ public interface IOllamaLibraryRetrievalMethod
     /// </summary>
     /// <param name="listing">Listing for which to retrieve details about specifications and download options</param>
     /// <param name="cancellationToken">Cancellation token</param>
-    IAsyncEnumerable<ModelListingDetails> GetModelListingDetails(
+    Task<ModelListingDetails> GetModelListingDetails(
         ModelListing listing,
         CancellationToken cancellationToken = default
     );
@@ -30,7 +31,7 @@ public interface IOllamaLibraryRetrievalMethod
     /// </summary>
     /// <param name="modelName">Name of model for which to retrieve details about specifications and download options</param>
     /// <param name="cancellationToken">Cancellation token</param>
-    IAsyncEnumerable<ModelListingDetails> GetModelListingDetails(
+    Task<ModelListingDetails> GetModelListingDetails(
         string modelName,
         CancellationToken cancellationToken = default
     );

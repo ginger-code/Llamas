@@ -9,7 +9,7 @@ namespace Llamas.Library;
 /// <summary>
 /// An implementation of a method for caching information about models available to pull
 /// </summary>
-public interface IOllamaLibraryPersistenceMethod
+public interface IOllamaLibraryPersistence
 {
     /// <summary>
     /// Queryable root for model listings

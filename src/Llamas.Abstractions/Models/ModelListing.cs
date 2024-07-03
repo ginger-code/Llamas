@@ -17,17 +17,12 @@ public sealed record ModelListing
     /// Initializes a new instance of the <see cref="T:Llamas.Models.ModelListing" /> class.
     /// </summary>
     [SetsRequiredMembers]
-    public ModelListing(
-        string name,
-        string description,
-        DateTimeOffset updated,
-        ModelSize[] modelSizes
-    )
+    public ModelListing(string name, string description, DateTimeOffset updated, string[] modelTags)
     {
         Name = name;
         Description = description;
         Updated = updated;
-        ModelSizes = modelSizes;
+        ModelTags = modelTags;
     }
 
     /// <summary>
@@ -46,7 +41,7 @@ public sealed record ModelListing
     public required DateTimeOffset Updated { get; init; }
 
     /// <summary>
-    /// Array of available sizes for the model
+    /// Array of tags for the model
     /// </summary>
-    public required ModelSize[] ModelSizes { get; init; }
+    public required string[] ModelTags { get; init; }
 }

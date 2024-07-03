@@ -4,7 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Llamas.Models;
 
-namespace Llamas.LibraryRetrieval;
+namespace Llamas.Library;
 
 /// <summary>
 /// An implementation of a method for caching information about models available to pull

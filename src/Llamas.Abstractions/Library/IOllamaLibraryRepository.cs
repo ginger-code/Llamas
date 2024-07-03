@@ -1,6 +1,4 @@
-using System.Diagnostics.CodeAnalysis;
-
-namespace Llamas.LibraryRetrieval;
+namespace Llamas.Library;
 
 /// <summary>
 /// A repository implementation for retrieving and caching information about models available to pull

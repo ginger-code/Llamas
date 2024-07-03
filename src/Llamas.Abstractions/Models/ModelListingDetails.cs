@@ -23,8 +23,8 @@ public sealed record ModelListingDetails
         string description,
         string version,
         DateTimeOffset updated,
-        ModelSize[] modelSizes,
-        IReadOnlyDictionary<ModelSize, FileSize> fileSizes,
+        string[] modelTags,
+        IReadOnlyDictionary<string, FileSize> fileSizes,
         string readmeMarkup
     )
     {
@@ -32,7 +32,7 @@ public sealed record ModelListingDetails
         Description = description;
         Version = version;
         Updated = updated;
-        ModelSizes = modelSizes;
+        ModelTags = modelTags;
         FileSizes = fileSizes;
         ReadmeMarkup = readmeMarkup;
     }
@@ -58,14 +58,14 @@ public sealed record ModelListingDetails
     public required DateTimeOffset Updated { get; init; }
 
     /// <summary>
-    /// Array of available sizes for the model
+    /// Array of tags for the model
     /// </summary>
-    public required ModelSize[] ModelSizes { get; init; }
+    public required string[] ModelTags { get; init; }
 
     /// <summary>
-    /// Dictionary of available file sizes by their model size
+    /// Dictionary of available file sizes by their tag
     /// </summary>
-    public required IReadOnlyDictionary<ModelSize, FileSize> FileSizes { get; init; }
+    public required IReadOnlyDictionary<string, FileSize> FileSizes { get; init; }
 
     /// <summary>
     /// HTML markup of the readme for the model

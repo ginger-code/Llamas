@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Threading;
 using Llamas.Models;
 
-namespace Llamas.LibraryRetrieval;
+namespace Llamas.Library;
 
 /// <summary>
 /// An implementation of a method for retrieving information about models available to pull from https://ollama.com/library

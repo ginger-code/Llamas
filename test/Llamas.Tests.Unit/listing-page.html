@@ -1,5 +1,3 @@
-
-
 <!doctype html>
 <html>
 <head>
@@ -8,16 +6,16 @@
     <meta charset="utf-8">
     <meta name="description" content="Get up and running with large language models.">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta property="og:image" content="https://ollama.com/public/og.png" />
-    <meta property="og:image:type" content="image/png" />
+    <meta property="og:image" content="https://ollama.com/public/og.png"/>
+    <meta property="og:image:type" content="image/png"/>
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="628">
-    <meta property="og:type" content="website" />
+    <meta property="og:type" content="website"/>
 
-    <meta property="twitter:card" content="summary" />
-    <meta property="twitter:site" content="ollama" />
+    <meta property="twitter:card" content="summary"/>
+    <meta property="twitter:site" content="ollama"/>
 
-    <meta property="twitter:image:src" content="https://ollama.com/public/og-twitter.png" />
+    <meta property="twitter:image:src" content="https://ollama.com/public/og-twitter.png"/>
     <meta property="twitter:image:width" content="1200">
     <meta property="twitter:image:height" content="628">
 
@@ -81,9 +79,9 @@
         }
     </script>
 
-    <meta property="og:title" content="Ollama" />
-    <meta property="og:url" content="https://ollama.com/search" />
-    <meta property="og:description" content="Get up and running with large language models." />
+    <meta property="og:title" content="Ollama"/>
+    <meta property="og:url" content="https://ollama.com/search"/>
+    <meta property="og:description" content="Get up and running with large language models."/>
 </head>
 <body>
 
@@ -91,17 +89,19 @@
 
     <nav class="flex w-full px-6 py-4 items-center justify-between md:hidden">
         <a href="/" class="z-50">
-            <img src="/public/ollama.png" class="w-6" alt="Ollama" />
+            <img src="/public/ollama.png" class="w-6" alt="Ollama"/>
         </a>
         <input type="checkbox" id="menu" class="hidden peer">
         <label for="menu" class="peer-checked:hidden cursor-pointer z-50">
-            <svg class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+            <svg class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+                 aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"/>
             </svg>
         </label>
         <label for="menu" class="hidden peer-checked:block cursor-pointer z-50">
-            <svg class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+            <svg class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+                 aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
             </svg>
         </label>
         <div class="peer-checked:flex fixed bg-white hidden top-0 pt-24 h-screen right-0 w-full sm:hidden flex-col px-6 py-4 text-3xl space-y-6 tracking-tight">
@@ -118,7 +118,7 @@
     </nav>
     <nav class="hidden select-none mx-auto md:flex justify-between items-center px-6 py-3.5 text-md md:text-lg">
         <div class="flex items-center space-x-8">
-            <a class="mr-2" href="/"><img src="/public/ollama.png" class="w-8" alt="Ollama" /></a>
+            <a class="mr-2" href="/"><img src="/public/ollama.png" class="w-8" alt="Ollama"/></a>
             <a class="hover:underline" href="/blog">Blog</a>
             <a class="hover:underline" target="_blank" href="https://discord.com/invite/ollama">
                 Discord
@@ -133,7 +133,8 @@
 
             <a class="hover:underline min-w-fit" href="/login">Sign in</a>
 
-            <a class="flex cursor-pointer items-center rounded-lg bg-neutral-800 px-4 py-1 text-white hover:bg-black" href="/download">
+            <a class="flex cursor-pointer items-center rounded-lg bg-neutral-800 px-4 py-1 text-white hover:bg-black"
+               href="/download">
                 Download
             </a>
         </div>
@@ -146,7 +147,7 @@
     document.addEventListener('DOMContentLoaded', function () {
         var searchIcon = document.getElementById('searchIcon');
         if (searchIcon !== null) {
-            searchIcon.addEventListener('click', function() {
+            searchIcon.addEventListener('click', function () {
                 searchInput.focus();
             });
         }
@@ -170,7 +171,7 @@
                 }, 150);
             });
 
-            searchInput.addEventListener('keydown', function(event) {
+            searchInput.addEventListener('keydown', function (event) {
                 if (event.key === 'Escape') {
                     hideSearchPopup();
                     searchInput.blur();
@@ -179,7 +180,7 @@
         }
     });
 
-    document.addEventListener('keydown', function(event) {
+    document.addEventListener('keydown', function (event) {
         if (event.key === 'Tab') {
             setTimeout(() => {
                 if (searchInput !== null && popup !== null && !searchInput.contains(document.activeElement) && !popup.contains(document.activeElement)) {
@@ -223,8 +224,8 @@
                         hx-sync="this:replace"
                         autofocus
                 />
-                <input type="hidden" id="firstPage" name="p" value="1" />
-                <input type="hidden" id="page" name="p" value="1" />
+                <input type="hidden" id="firstPage" name="p" value="1"/>
+                <input type="hidden" id="page" name="p" value="1"/>
             </div>
             <div class="flex flex-row space-x-1 sm:flex-shrink-0 sm:space-x-3">
                 <select
@@ -238,8 +239,8 @@
                         hx-include="#filter, #sort, #page"
                 >
                     <option disabled value="">Sort By</option>
-                    <option value="featured" >Featured</option>
-                    <option value="popular" >Most popular</option>
+                    <option value="featured">Featured</option>
+                    <option value="popular">Most popular</option>
                     <option value="newest" selected>Newest</option>
                 </select>
             </div>
@@ -285,7 +286,7 @@
                   stroke-linejoin="round"
                   d="M9.568 3H5.25A2.25 2.25 0 003 5.25v4.318c0 .597.237 1.17.659 1.591l9.581 9.581c.699.699 1.78.872 2.607.33a18.095 18.095 0 005.223-5.223c.542-.827.369-1.908-.33-2.607L11.16 3.66A2.25 2.25 0 009.568 3z"
           />
-          <path stroke-linecap="round" stroke-linejoin="round" d="M6 6h.008v.008H6V6z" />
+          <path stroke-linecap="round" stroke-linejoin="round" d="M6 6h.008v.008H6V6z"/>
         </svg>
         1<span class="hidden sm:flex">&nbsp;Tag</span>
       </span>
@@ -325,7 +326,8 @@
 
                         <div class="flex flex-col space-y-2">
 
-                            <p class="max-w-md break-words">From: https://huggingface.co/fearlessdots/Llama-3-Alpha-Centauri-v0.1</p>
+                            <p class="max-w-md break-words">From:
+                                https://huggingface.co/fearlessdots/Llama-3-Alpha-Centauri-v0.1</p>
 
 
                             <div class="flex flex-wrap space-x-2">
@@ -352,7 +354,7 @@
                   stroke-linejoin="round"
                   d="M9.568 3H5.25A2.25 2.25 0 003 5.25v4.318c0 .597.237 1.17.659 1.591l9.581 9.581c.699.699 1.78.872 2.607.33a18.095 18.095 0 005.223-5.223c.542-.827.369-1.908-.33-2.607L11.16 3.66A2.25 2.25 0 009.568 3z"
           />
-          <path stroke-linecap="round" stroke-linejoin="round" d="M6 6h.008v.008H6V6z" />
+          <path stroke-linecap="round" stroke-linejoin="round" d="M6 6h.008v.008H6V6z"/>
         </svg>
         2<span class="hidden sm:flex">&nbsp;Tags</span>
       </span>
@@ -392,7 +394,8 @@
 
                         <div class="flex flex-col space-y-2">
 
-                            <p class="max-w-md break-words">(Updated: May 2024) https://huggingface.co/fearlessdots/WizardLM-2-7B-abliterated-GGUF</p>
+                            <p class="max-w-md break-words">(Updated: May 2024)
+                                https://huggingface.co/fearlessdots/WizardLM-2-7B-abliterated-GGUF</p>
 
 
                             <div class="flex flex-wrap space-x-2">
@@ -419,7 +422,7 @@
                   stroke-linejoin="round"
                   d="M9.568 3H5.25A2.25 2.25 0 003 5.25v4.318c0 .597.237 1.17.659 1.591l9.581 9.581c.699.699 1.78.872 2.607.33a18.095 18.095 0 005.223-5.223c.542-.827.369-1.908-.33-2.607L11.16 3.66A2.25 2.25 0 009.568 3z"
           />
-          <path stroke-linecap="round" stroke-linejoin="round" d="M6 6h.008v.008H6V6z" />
+          <path stroke-linecap="round" stroke-linejoin="round" d="M6 6h.008v.008H6V6z"/>
         </svg>
         2<span class="hidden sm:flex">&nbsp;Tags</span>
       </span>
@@ -484,7 +487,7 @@
                   stroke-linejoin="round"
                   d="M9.568 3H5.25A2.25 2.25 0 003 5.25v4.318c0 .597.237 1.17.659 1.591l9.581 9.581c.699.699 1.78.872 2.607.33a18.095 18.095 0 005.223-5.223c.542-.827.369-1.908-.33-2.607L11.16 3.66A2.25 2.25 0 009.568 3z"
           />
-          <path stroke-linecap="round" stroke-linejoin="round" d="M6 6h.008v.008H6V6z" />
+          <path stroke-linecap="round" stroke-linejoin="round" d="M6 6h.008v.008H6V6z"/>
         </svg>
         1<span class="hidden sm:flex">&nbsp;Tag</span>
       </span>
@@ -524,7 +527,8 @@
 
                         <div class="flex flex-col space-y-2">
 
-                            <p class="max-w-md break-words">InternLM2.5 is a 7B parameter model tailored for practical scenarios with outstanding reasoning capability.</p>
+                            <p class="max-w-md break-words">InternLM2.5 is a 7B parameter model tailored for practical
+                                scenarios with outstanding reasoning capability.</p>
 
 
                             <p class="my-2 flex space-x-5 text-[13px] font-medium text-neutral-500">
@@ -565,7 +569,7 @@
                   stroke-linejoin="round"
                   d="M9.568 3H5.25A2.25 2.25 0 003 5.25v4.318c0 .597.237 1.17.659 1.591l9.581 9.581c.699.699 1.78.872 2.607.33a18.095 18.095 0 005.223-5.223c.542-.827.369-1.908-.33-2.607L11.16 3.66A2.25 2.25 0 009.568 3z"
           />
-          <path stroke-linecap="round" stroke-linejoin="round" d="M6 6h.008v.008H6V6z" />
+          <path stroke-linecap="round" stroke-linejoin="round" d="M6 6h.008v.008H6V6z"/>
         </svg>
         17<span class="hidden sm:flex">&nbsp;Tags</span>
       </span>
@@ -630,7 +634,7 @@
                   stroke-linejoin="round"
                   d="M9.568 3H5.25A2.25 2.25 0 003 5.25v4.318c0 .597.237 1.17.659 1.591l9.581 9.581c.699.699 1.78.872 2.607.33a18.095 18.095 0 005.223-5.223c.542-.827.369-1.908-.33-2.607L11.16 3.66A2.25 2.25 0 009.568 3z"
           />
-          <path stroke-linecap="round" stroke-linejoin="round" d="M6 6h.008v.008H6V6z" />
+          <path stroke-linecap="round" stroke-linejoin="round" d="M6 6h.008v.008H6V6z"/>
         </svg>
         1<span class="hidden sm:flex">&nbsp;Tag</span>
       </span>
@@ -695,7 +699,7 @@
                   stroke-linejoin="round"
                   d="M9.568 3H5.25A2.25 2.25 0 003 5.25v4.318c0 .597.237 1.17.659 1.591l9.581 9.581c.699.699 1.78.872 2.607.33a18.095 18.095 0 005.223-5.223c.542-.827.369-1.908-.33-2.607L11.16 3.66A2.25 2.25 0 009.568 3z"
           />
-          <path stroke-linecap="round" stroke-linejoin="round" d="M6 6h.008v.008H6V6z" />
+          <path stroke-linecap="round" stroke-linejoin="round" d="M6 6h.008v.008H6V6z"/>
         </svg>
         1<span class="hidden sm:flex">&nbsp;Tag</span>
       </span>
@@ -760,7 +764,7 @@
                   stroke-linejoin="round"
                   d="M9.568 3H5.25A2.25 2.25 0 003 5.25v4.318c0 .597.237 1.17.659 1.591l9.581 9.581c.699.699 1.78.872 2.607.33a18.095 18.095 0 005.223-5.223c.542-.827.369-1.908-.33-2.607L11.16 3.66A2.25 2.25 0 009.568 3z"
           />
-          <path stroke-linecap="round" stroke-linejoin="round" d="M6 6h.008v.008H6V6z" />
+          <path stroke-linecap="round" stroke-linejoin="round" d="M6 6h.008v.008H6V6z"/>
         </svg>
         1<span class="hidden sm:flex">&nbsp;Tag</span>
       </span>
@@ -827,7 +831,7 @@
                   stroke-linejoin="round"
                   d="M9.568 3H5.25A2.25 2.25 0 003 5.25v4.318c0 .597.237 1.17.659 1.591l9.581 9.581c.699.699 1.78.872 2.607.33a18.095 18.095 0 005.223-5.223c.542-.827.369-1.908-.33-2.607L11.16 3.66A2.25 2.25 0 009.568 3z"
           />
-          <path stroke-linecap="round" stroke-linejoin="round" d="M6 6h.008v.008H6V6z" />
+          <path stroke-linecap="round" stroke-linejoin="round" d="M6 6h.008v.008H6V6z"/>
         </svg>
         1<span class="hidden sm:flex">&nbsp;Tag</span>
       </span>
@@ -913,7 +917,7 @@
                   stroke-linejoin="round"
                   d="M9.568 3H5.25A2.25 2.25 0 003 5.25v4.318c0 .597.237 1.17.659 1.591l9.581 9.581c.699.699 1.78.872 2.607.33a18.095 18.095 0 005.223-5.223c.542-.827.369-1.908-.33-2.607L11.16 3.66A2.25 2.25 0 009.568 3z"
           />
-          <path stroke-linecap="round" stroke-linejoin="round" d="M6 6h.008v.008H6V6z" />
+          <path stroke-linecap="round" stroke-linejoin="round" d="M6 6h.008v.008H6V6z"/>
         </svg>
         1<span class="hidden sm:flex">&nbsp;Tag</span>
       </span>
@@ -999,7 +1003,7 @@
                   stroke-linejoin="round"
                   d="M9.568 3H5.25A2.25 2.25 0 003 5.25v4.318c0 .597.237 1.17.659 1.591l9.581 9.581c.699.699 1.78.872 2.607.33a18.095 18.095 0 005.223-5.223c.542-.827.369-1.908-.33-2.607L11.16 3.66A2.25 2.25 0 009.568 3z"
           />
-          <path stroke-linecap="round" stroke-linejoin="round" d="M6 6h.008v.008H6V6z" />
+          <path stroke-linecap="round" stroke-linejoin="round" d="M6 6h.008v.008H6V6z"/>
         </svg>
         1<span class="hidden sm:flex">&nbsp;Tag</span>
       </span>
@@ -1087,7 +1091,7 @@
                   stroke-linejoin="round"
                   d="M9.568 3H5.25A2.25 2.25 0 003 5.25v4.318c0 .597.237 1.17.659 1.591l9.581 9.581c.699.699 1.78.872 2.607.33a18.095 18.095 0 005.223-5.223c.542-.827.369-1.908-.33-2.607L11.16 3.66A2.25 2.25 0 009.568 3z"
           />
-          <path stroke-linecap="round" stroke-linejoin="round" d="M6 6h.008v.008H6V6z" />
+          <path stroke-linecap="round" stroke-linejoin="round" d="M6 6h.008v.008H6V6z"/>
         </svg>
         1<span class="hidden sm:flex">&nbsp;Tag</span>
       </span>
@@ -1154,7 +1158,7 @@
                   stroke-linejoin="round"
                   d="M9.568 3H5.25A2.25 2.25 0 003 5.25v4.318c0 .597.237 1.17.659 1.591l9.581 9.581c.699.699 1.78.872 2.607.33a18.095 18.095 0 005.223-5.223c.542-.827.369-1.908-.33-2.607L11.16 3.66A2.25 2.25 0 009.568 3z"
           />
-          <path stroke-linecap="round" stroke-linejoin="round" d="M6 6h.008v.008H6V6z" />
+          <path stroke-linecap="round" stroke-linejoin="round" d="M6 6h.008v.008H6V6z"/>
         </svg>
         1<span class="hidden sm:flex">&nbsp;Tag</span>
       </span>
@@ -1194,7 +1198,8 @@
 
                         <div class="flex flex-col space-y-2">
 
-                            <p class="max-w-md break-words">Islamic bot, if you want for authenticity, its best to feed it your own data, library and command it to explain it through that</p>
+                            <p class="max-w-md break-words">Islamic bot, if you want for authenticity, its best to feed
+                                it your own data, library and command it to explain it through that</p>
 
 
                             <div class="flex flex-wrap space-x-2">
@@ -1221,7 +1226,7 @@
                   stroke-linejoin="round"
                   d="M9.568 3H5.25A2.25 2.25 0 003 5.25v4.318c0 .597.237 1.17.659 1.591l9.581 9.581c.699.699 1.78.872 2.607.33a18.095 18.095 0 005.223-5.223c.542-.827.369-1.908-.33-2.607L11.16 3.66A2.25 2.25 0 009.568 3z"
           />
-          <path stroke-linecap="round" stroke-linejoin="round" d="M6 6h.008v.008H6V6z" />
+          <path stroke-linecap="round" stroke-linejoin="round" d="M6 6h.008v.008H6V6z"/>
         </svg>
         1<span class="hidden sm:flex">&nbsp;Tag</span>
       </span>
@@ -1307,7 +1312,7 @@
                   stroke-linejoin="round"
                   d="M9.568 3H5.25A2.25 2.25 0 003 5.25v4.318c0 .597.237 1.17.659 1.591l9.581 9.581c.699.699 1.78.872 2.607.33a18.095 18.095 0 005.223-5.223c.542-.827.369-1.908-.33-2.607L11.16 3.66A2.25 2.25 0 009.568 3z"
           />
-          <path stroke-linecap="round" stroke-linejoin="round" d="M6 6h.008v.008H6V6z" />
+          <path stroke-linecap="round" stroke-linejoin="round" d="M6 6h.008v.008H6V6z"/>
         </svg>
         1<span class="hidden sm:flex">&nbsp;Tag</span>
       </span>
@@ -1393,7 +1398,7 @@
                   stroke-linejoin="round"
                   d="M9.568 3H5.25A2.25 2.25 0 003 5.25v4.318c0 .597.237 1.17.659 1.591l9.581 9.581c.699.699 1.78.872 2.607.33a18.095 18.095 0 005.223-5.223c.542-.827.369-1.908-.33-2.607L11.16 3.66A2.25 2.25 0 009.568 3z"
           />
-          <path stroke-linecap="round" stroke-linejoin="round" d="M6 6h.008v.008H6V6z" />
+          <path stroke-linecap="round" stroke-linejoin="round" d="M6 6h.008v.008H6V6z"/>
         </svg>
         1<span class="hidden sm:flex">&nbsp;Tag</span>
       </span>
@@ -1458,7 +1463,7 @@
                   stroke-linejoin="round"
                   d="M9.568 3H5.25A2.25 2.25 0 003 5.25v4.318c0 .597.237 1.17.659 1.591l9.581 9.581c.699.699 1.78.872 2.607.33a18.095 18.095 0 005.223-5.223c.542-.827.369-1.908-.33-2.607L11.16 3.66A2.25 2.25 0 009.568 3z"
           />
-          <path stroke-linecap="round" stroke-linejoin="round" d="M6 6h.008v.008H6V6z" />
+          <path stroke-linecap="round" stroke-linejoin="round" d="M6 6h.008v.008H6V6z"/>
         </svg>
         1<span class="hidden sm:flex">&nbsp;Tag</span>
       </span>
@@ -1544,7 +1549,7 @@
                   stroke-linejoin="round"
                   d="M9.568 3H5.25A2.25 2.25 0 003 5.25v4.318c0 .597.237 1.17.659 1.591l9.581 9.581c.699.699 1.78.872 2.607.33a18.095 18.095 0 005.223-5.223c.542-.827.369-1.908-.33-2.607L11.16 3.66A2.25 2.25 0 009.568 3z"
           />
-          <path stroke-linecap="round" stroke-linejoin="round" d="M6 6h.008v.008H6V6z" />
+          <path stroke-linecap="round" stroke-linejoin="round" d="M6 6h.008v.008H6V6z"/>
         </svg>
         1<span class="hidden sm:flex">&nbsp;Tag</span>
       </span>
@@ -1609,7 +1614,7 @@
                   stroke-linejoin="round"
                   d="M9.568 3H5.25A2.25 2.25 0 003 5.25v4.318c0 .597.237 1.17.659 1.591l9.581 9.581c.699.699 1.78.872 2.607.33a18.095 18.095 0 005.223-5.223c.542-.827.369-1.908-.33-2.607L11.16 3.66A2.25 2.25 0 009.568 3z"
           />
-          <path stroke-linecap="round" stroke-linejoin="round" d="M6 6h.008v.008H6V6z" />
+          <path stroke-linecap="round" stroke-linejoin="round" d="M6 6h.008v.008H6V6z"/>
         </svg>
         1<span class="hidden sm:flex">&nbsp;Tag</span>
       </span>
@@ -1674,7 +1679,7 @@
                   stroke-linejoin="round"
                   d="M9.568 3H5.25A2.25 2.25 0 003 5.25v4.318c0 .597.237 1.17.659 1.591l9.581 9.581c.699.699 1.78.872 2.607.33a18.095 18.095 0 005.223-5.223c.542-.827.369-1.908-.33-2.607L11.16 3.66A2.25 2.25 0 009.568 3z"
           />
-          <path stroke-linecap="round" stroke-linejoin="round" d="M6 6h.008v.008H6V6z" />
+          <path stroke-linecap="round" stroke-linejoin="round" d="M6 6h.008v.008H6V6z"/>
         </svg>
         1<span class="hidden sm:flex">&nbsp;Tag</span>
       </span>
@@ -1760,7 +1765,7 @@
                   stroke-linejoin="round"
                   d="M9.568 3H5.25A2.25 2.25 0 003 5.25v4.318c0 .597.237 1.17.659 1.591l9.581 9.581c.699.699 1.78.872 2.607.33a18.095 18.095 0 005.223-5.223c.542-.827.369-1.908-.33-2.607L11.16 3.66A2.25 2.25 0 009.568 3z"
           />
-          <path stroke-linecap="round" stroke-linejoin="round" d="M6 6h.008v.008H6V6z" />
+          <path stroke-linecap="round" stroke-linejoin="round" d="M6 6h.008v.008H6V6z"/>
         </svg>
         1<span class="hidden sm:flex">&nbsp;Tag</span>
       </span>
@@ -1841,7 +1846,7 @@
                   stroke-linejoin="round"
                   d="M9.568 3H5.25A2.25 2.25 0 003 5.25v4.318c0 .597.237 1.17.659 1.591l9.581 9.581c.699.699 1.78.872 2.607.33a18.095 18.095 0 005.223-5.223c.542-.827.369-1.908-.33-2.607L11.16 3.66A2.25 2.25 0 009.568 3z"
           />
-          <path stroke-linecap="round" stroke-linejoin="round" d="M6 6h.008v.008H6V6z" />
+          <path stroke-linecap="round" stroke-linejoin="round" d="M6 6h.008v.008H6V6z"/>
         </svg>
         2<span class="hidden sm:flex">&nbsp;Tags</span>
       </span>
@@ -1881,7 +1886,8 @@
 
                         <div class="flex flex-col space-y-2">
 
-                            <p class="max-w-md break-words">The official ollama model for Gemma-2-9B-Chinese-Chat (https://huggingface.co/shenzhi-wang/Gemma-2-9B-Chinese-Chat).</p>
+                            <p class="max-w-md break-words">The official ollama model for Gemma-2-9B-Chinese-Chat
+                                (https://huggingface.co/shenzhi-wang/Gemma-2-9B-Chinese-Chat).</p>
 
 
                             <div class="flex flex-wrap space-x-2">
@@ -1929,7 +1935,7 @@
                   stroke-linejoin="round"
                   d="M9.568 3H5.25A2.25 2.25 0 003 5.25v4.318c0 .597.237 1.17.659 1.591l9.581 9.581c.699.699 1.78.872 2.607.33a18.095 18.095 0 005.223-5.223c.542-.827.369-1.908-.33-2.607L11.16 3.66A2.25 2.25 0 009.568 3z"
           />
-          <path stroke-linecap="round" stroke-linejoin="round" d="M6 6h.008v.008H6V6z" />
+          <path stroke-linecap="round" stroke-linejoin="round" d="M6 6h.008v.008H6V6z"/>
         </svg>
         1<span class="hidden sm:flex">&nbsp;Tag</span>
       </span>
@@ -1969,7 +1975,8 @@
 
                         <div class="flex flex-col space-y-2">
 
-                            <p class="max-w-md break-words">The official ollama model for Gemma-2-27B-Chinese-Chat (https://huggingface.co/shenzhi-wang/Gemma-2-27B-Chinese-Chat).</p>
+                            <p class="max-w-md break-words">The official ollama model for Gemma-2-27B-Chinese-Chat
+                                (https://huggingface.co/shenzhi-wang/Gemma-2-27B-Chinese-Chat).</p>
 
 
                             <div class="flex flex-wrap space-x-2">
@@ -2017,7 +2024,7 @@
                   stroke-linejoin="round"
                   d="M9.568 3H5.25A2.25 2.25 0 003 5.25v4.318c0 .597.237 1.17.659 1.591l9.581 9.581c.699.699 1.78.872 2.607.33a18.095 18.095 0 005.223-5.223c.542-.827.369-1.908-.33-2.607L11.16 3.66A2.25 2.25 0 009.568 3z"
           />
-          <path stroke-linecap="round" stroke-linejoin="round" d="M6 6h.008v.008H6V6z" />
+          <path stroke-linecap="round" stroke-linejoin="round" d="M6 6h.008v.008H6V6z"/>
         </svg>
         1<span class="hidden sm:flex">&nbsp;Tag</span>
       </span>
@@ -2082,7 +2089,7 @@
                   stroke-linejoin="round"
                   d="M9.568 3H5.25A2.25 2.25 0 003 5.25v4.318c0 .597.237 1.17.659 1.591l9.581 9.581c.699.699 1.78.872 2.607.33a18.095 18.095 0 005.223-5.223c.542-.827.369-1.908-.33-2.607L11.16 3.66A2.25 2.25 0 009.568 3z"
           />
-          <path stroke-linecap="round" stroke-linejoin="round" d="M6 6h.008v.008H6V6z" />
+          <path stroke-linecap="round" stroke-linejoin="round" d="M6 6h.008v.008H6V6z"/>
         </svg>
         1<span class="hidden sm:flex">&nbsp;Tag</span>
       </span>
@@ -2185,7 +2192,8 @@
     <div class="flex flex-col items-center justify-center w-full">
         <ul class="flex flex-wrap justify-center items-center text-sm text-neutral-500">
             <li class="mx-2 my-1"><a href="/blog" class="hover:underline">Blog</a></li>
-            <li class="mx-2 my-1"><a href="https://github.com/ollama/ollama/tree/main/docs" class="hover:underline">Docs</a></li>
+            <li class="mx-2 my-1"><a href="https://github.com/ollama/ollama/tree/main/docs"
+                                     class="hover:underline">Docs</a></li>
             <li class="mx-2 my-1"><a href="https://github.com/ollama/ollama" class="hover:underline">GitHub</a></li>
         </ul>
         <ul class="flex flex-wrap justify-center items-center text-sm text-neutral-500">
@@ -2230,7 +2238,7 @@
             }
         } else if (targetElement === 'sort') {
             if (sort !== '') {
-                currentUrl.searchParams.set('sort',sort)
+                currentUrl.searchParams.set('sort', sort)
             } else {
                 currentUrl.searchParams.delete('sort')
             }
@@ -2238,6 +2246,7 @@
 
         history.pushState({}, '', currentUrl.toString())
     })
+
     function resetPage() {
         document.getElementById('page').value = '1';
     }

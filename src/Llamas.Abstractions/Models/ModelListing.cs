@@ -17,12 +17,12 @@ public sealed record ModelListing
     /// Initializes a new instance of the <see cref="T:Llamas.Models.ModelListing" /> class.
     /// </summary>
     [SetsRequiredMembers]
-    public ModelListing(string name, string description, DateTimeOffset updated, string[] modelTags)
+    public ModelListing(string name, string description, DateOnly updated, string[]? modelTags)
     {
         Name = name;
         Description = description;
         Updated = updated;
-        ModelTags = modelTags;
+        ModelTags = modelTags ?? [];
     }
 
     /// <summary>
@@ -36,9 +36,9 @@ public sealed record ModelListing
     public required string Description { get; init; }
 
     /// <summary>
-    /// Approximate time model was last updated
+    /// Approximate date model was last updated
     /// </summary>
-    public required DateTimeOffset Updated { get; init; }
+    public required DateOnly Updated { get; init; }
 
     /// <summary>
     /// Array of tags for the model

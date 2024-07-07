@@ -24,7 +24,7 @@ public sealed record ModelListingDetails
         string version,
         DateTimeOffset updated,
         string[] modelTags,
-        IReadOnlyDictionary<string, FileSize> fileSizes,
+        IReadOnlyDictionary<string, string> fileSizes,
         string readmeMarkup
     )
     {
@@ -65,7 +65,7 @@ public sealed record ModelListingDetails
     /// <summary>
     /// Dictionary of available file sizes by their tag
     /// </summary>
-    public required IReadOnlyDictionary<string, FileSize> FileSizes { get; init; }
+    public required IReadOnlyDictionary<string, string> FileSizes { get; init; }
 
     /// <summary>
     /// HTML markup of the readme for the model

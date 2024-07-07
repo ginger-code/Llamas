@@ -73,9 +73,42 @@ internal static partial class HtmlOllamaLibraryParser
     /// <summary>
     /// Parse the model listing details HTML to retrieve a <see cref="ModelListingDetails" /> instance
     /// </summary>
-    public static ModelListingDetails ParseModelListingDetailsHtml(string html)
+    public static ModelListingDetails ParseModelListingDetailsHtml(
+        string html,
+        DateTimeOffset currentTime
+    )
     {
-        throw new NotImplementedException();
+        var doc = new HtmlDocument();
+        doc.LoadHtml(html);
+        var name = doc.QuerySelector("h1.flex > a.font-medium").InnerText;
+        var description = doc.QuerySelector("h2.break-words").InnerText;
+        var version = doc.QuerySelector("div.px-4 > p:last-child").InnerText;
+        var updated = ParseUpdatedTimeOffset(
+            doc.QuerySelector(@"p.sm\:hidden")
+                .InnerText.Replace(" ago", "")
+                .Replace("Updated&nbsp;", "")
+                .Trim(),
+            currentTime
+        );
+        var fileSizes = doc.QuerySelectorAll("#primary-tags > a")
+            .Select(a =>
+            {
+                var tag = a.QuerySelector("div > span").InnerText;
+                var size = a.QuerySelector("span").InnerText;
+                return (tag, size);
+            })
+            .ToDictionary();
+        var tags = fileSizes.Keys.ToArray();
+        var readme = doc.QuerySelector("#display").InnerHtml;
+        return new ModelListingDetails(
+            name,
+            description,
+            version,
+            updated,
+            tags,
+            fileSizes,
+            readme
+        );
     }
 
     /// <summary>

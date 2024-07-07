@@ -72,7 +72,8 @@ public class HtmlOllamaLibraryRetriever : IOllamaLibraryRetriever
     {
         var html = await RetrieveModelListingDetailsHtml(listing.Name, cancellationToken)
             .ConfigureAwait(false);
-        return Parser.ParseModelListingDetailsHtml(html);
+        var currentTime = DateTimeOffset.Now;
+        return Parser.ParseModelListingDetailsHtml(html, currentTime);
     }
 
     /// <summary>
@@ -87,7 +88,8 @@ public class HtmlOllamaLibraryRetriever : IOllamaLibraryRetriever
     {
         var html = await RetrieveModelListingDetailsHtml(modelName, cancellationToken)
             .ConfigureAwait(false);
-        return Parser.ParseModelListingDetailsHtml(html);
+        var currentTime = DateTimeOffset.Now;
+        return Parser.ParseModelListingDetailsHtml(html, currentTime);
     }
 
     /// <summary>

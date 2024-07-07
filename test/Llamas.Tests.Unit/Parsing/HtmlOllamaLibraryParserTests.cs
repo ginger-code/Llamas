@@ -3,7 +3,7 @@ using Parser = Llamas.Library.HtmlOllamaLibraryParser;
 
 namespace Llamas.Tests.Unit.Parsing;
 
-public class HtmlOllamaLibraryParserTests
+sealed class HtmlOllamaLibraryParserTests
 {
     [Test]
     public async Task ParseListingNode()

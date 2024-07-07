@@ -33,16 +33,22 @@ internal static partial class HtmlOllamaLibraryParser
     /// <summary>
     /// Parse the listing HTML to retrieve a collection of <see cref="ModelListing" /> instances
     /// </summary>
-    public static IEnumerable<ModelListing> ParseListingHtml(HtmlDocument html)
+    public static IEnumerable<ModelListing> ParseListingHtml(
+        HtmlDocument html,
+        DateTimeOffset currentTime
+    )
     {
         var listingNodes = html.QuerySelectorAll("ul.grid > li.flex > a:nth-child(1)");
         foreach (var listingNode in listingNodes)
         {
-            yield return ParseListingNode(listingNode);
+            yield return ParseListingNode(listingNode, currentTime);
         }
     }
 
-    public static ModelListing ParseListingNode(HtmlNode node)
+    /// <summary>
+    /// Parse the model listing HTML node to retrieve a <see cref="ModelListing" /> instance
+    /// </summary>
+    public static ModelListing ParseListingNode(HtmlNode node, DateTimeOffset currentTime)
     {
         var name = node.Attributes["href"].Value.TrimStart('/');
         var description = node.QuerySelector("div.flex > p:nth-child(1)").InnerText;
@@ -53,7 +59,8 @@ internal static partial class HtmlOllamaLibraryParser
             node.QuerySelector("div.flex > p.flex > span:last-child")
                 .InnerText.Replace(" ago", "")
                 .Replace("Updated&nbsp;", "")
-                .Trim()
+                .Trim(),
+            currentTime
         );
         return new ModelListing(
             name,
@@ -68,45 +75,52 @@ internal static partial class HtmlOllamaLibraryParser
     /// </summary>
     public static ModelListingDetails ParseModelListingDetailsHtml(string html)
     {
-        throw new System.NotImplementedException();
+        throw new NotImplementedException();
     }
 
-    public static DateTimeOffset ParseUpdatedTimeOffset(string updated)
+    /// <summary>
+    /// Parse humanized datetime offset using the current time
+    /// </summary>
+    /// <param name="updated"></param>
+    /// <param name="currentTime"></param>
+    /// <returns></returns>
+    /// <exception cref="FormatException"></exception>
+    public static DateTimeOffset ParseUpdatedTimeOffset(string updated, DateTimeOffset currentTime)
     {
         var num = NumberRegex().Match(updated);
         if (updated.Contains("second"))
         {
-            return DateTimeOffset.Now - TimeSpan.FromSeconds(int.Parse(num.Value));
+            return currentTime - TimeSpan.FromSeconds(int.Parse(num.Value));
         }
 
         if (updated.Contains("minute"))
         {
-            return DateTimeOffset.Now - TimeSpan.FromMinutes(int.Parse(num.Value));
+            return currentTime - TimeSpan.FromMinutes(int.Parse(num.Value));
         }
 
         if (updated.Contains("hour"))
         {
-            return DateTimeOffset.Now - TimeSpan.FromHours(int.Parse(num.Value));
+            return currentTime - TimeSpan.FromHours(int.Parse(num.Value));
         }
 
         if (updated.Contains("day"))
         {
-            return DateTimeOffset.Now - TimeSpan.FromDays(int.Parse(num.Value));
+            return currentTime - TimeSpan.FromDays(int.Parse(num.Value));
         }
 
         if (updated.Contains("week"))
         {
-            return DateTimeOffset.Now - TimeSpan.FromDays(int.Parse(num.Value) * 7);
+            return currentTime - TimeSpan.FromDays(int.Parse(num.Value) * 7);
         }
 
         if (updated.Contains("month"))
         {
-            return DateTimeOffset.Now - TimeSpan.FromDays(int.Parse(num.Value) * 30);
+            return currentTime - TimeSpan.FromDays(int.Parse(num.Value) * 30);
         }
 
         if (updated.Contains("year"))
         {
-            return DateTimeOffset.Now - TimeSpan.FromDays(int.Parse(num.Value) * 365);
+            return currentTime - TimeSpan.FromDays(int.Parse(num.Value) * 365);
         }
 
         throw new FormatException($"Unable to parse updated time offset '{updated}'");

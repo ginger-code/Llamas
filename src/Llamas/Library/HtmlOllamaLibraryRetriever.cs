@@ -1,13 +1,10 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
 using System.Runtime.CompilerServices;
-using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using HtmlAgilityPack;
-using HtmlAgilityPack.CssSelectors.NetCore;
 using Llamas.Models;
 using Parser = Llamas.Library.HtmlOllamaLibraryParser;
 
@@ -16,9 +13,12 @@ namespace Llamas.Library;
 /// <summary>
 /// Ollama library retriever implementation that parses HTML from https://ollama.com/library
 /// </summary>
-public partial class HtmlOllamaLibraryRetriever : IOllamaLibraryRetriever
+public class HtmlOllamaLibraryRetriever : IOllamaLibraryRetriever
 {
-    private HttpClient _httpClient;
+    /// <summary>
+    /// Injected client for making HTTP requests
+    /// </summary>
+    private readonly HttpClient _httpClient;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="T:Llamas.Library.HtmlOllamaLibraryRetriever" /> class.
@@ -38,10 +38,11 @@ public partial class HtmlOllamaLibraryRetriever : IOllamaLibraryRetriever
     {
         var page = 1;
         var html = await RetrievePagedListingHtml(page, cancellationToken).ConfigureAwait(false);
+        var currentTime = DateTimeOffset.Now;
         var doc = new HtmlDocument();
         doc.LoadHtml(html);
         var finalPage = Parser.ParseFinalPageNumber(doc);
-        foreach (var listing in Parser.ParseListingHtml(doc))
+        foreach (var listing in Parser.ParseListingHtml(doc, currentTime))
         {
             yield return listing;
         }
@@ -50,8 +51,9 @@ public partial class HtmlOllamaLibraryRetriever : IOllamaLibraryRetriever
         {
             page++;
             html = await RetrievePagedListingHtml(page, cancellationToken).ConfigureAwait(false);
+            currentTime = DateTimeOffset.Now;
             doc.LoadHtml(html);
-            foreach (var listing in Parser.ParseListingHtml(doc))
+            foreach (var listing in Parser.ParseListingHtml(doc, currentTime))
             {
                 yield return listing;
             }
@@ -92,27 +94,29 @@ public partial class HtmlOllamaLibraryRetriever : IOllamaLibraryRetriever
     /// Retrieve the paged listing HTML for a given page number
     /// </summary>
     /// <returns></returns>
-    private async Task<string> RetrievePagedListingHtml(
+    private Task<string> RetrievePagedListingHtml(
         int page = 1,
         CancellationToken cancellationToken = default
     )
     {
-        return await _httpClient
-            .GetStringAsync($"https://ollama.com/search?q=&p={page}&sort=newest", cancellationToken)
-            .ConfigureAwait(false);
+        return _httpClient.GetStringAsync(
+            $"https://ollama.com/search?q=&p={page}&sort=newest",
+            cancellationToken
+        );
     }
 
     /// <summary>
-    /// Retrieve the model listing details HTML for a given model name
+    /// Retrieve the model listing details HTML fors a given model name
     /// </summary>
-    private async Task<string> RetrieveModelListingDetailsHtml(
+    private Task<string> RetrieveModelListingDetailsHtml(
         string modelName,
         CancellationToken cancellationToken = default
     )
     {
         var prefix = modelName.Contains('/') ? "" : "library/";
-        return await _httpClient
-            .GetStringAsync($"https://ollama.com/{prefix}{modelName}", cancellationToken)
-            .ConfigureAwait(false);
+        return _httpClient.GetStringAsync(
+            $"https://ollama.com/{prefix}{modelName}",
+            cancellationToken
+        );
     }
 }

@@ -1,0 +1,2208 @@
+<!doctype html>
+<html>
+<head>
+
+    <meta charset="utf-8">
+    <meta name="description" content="Get up and running with large language models.">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta property="og:image" content="https://ollama.com/public/og.png" />
+    <meta property="og:image:type" content="image/png" />
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="628">
+    <meta property="og:type" content="website" />
+
+    <meta property="twitter:card" content="summary" />
+    <meta property="twitter:site" content="ollama" />
+
+    <meta property="twitter:image:src" content="https://ollama.com/public/og-twitter.png" />
+    <meta property="twitter:image:width" content="1200">
+    <meta property="twitter:image:height" content="628">
+
+    <link rel="icon" type="image/png" sizes="16x16" href="/public/icon-16x16.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/public/icon-32x32.png">
+    <link rel="icon" type="image/png" sizes="48x48" href="/public/icon-48x48.png">
+    <link rel="icon" type="image/png" sizes="64x64" href="/public/icon-64x64.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/public/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="/public/android-chrome-icon-192x192.png">
+    <link rel="icon" type="image/png" sizes="512x512" href="/public/android-chrome-icon-512x512.png">
+
+    <link href="/public/tailwind.css" rel="stylesheet">
+
+    <style>
+        body {
+            -webkit-font-smoothing: antialiased;
+            font-synthesis: none;
+            text-rendering: optimizeLegibility;
+            position: absolute;
+            min-height: 100vh;
+            width: 100%;
+            height: 100%;
+            margin: 0;
+
+            display: flex;
+            flex-direction: column;
+        }
+    </style>
+    <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "WebSite",
+            "name": "Ollama",
+            "url": "https://ollama.com"
+        }
+    </script>
+    <script src="/public/vendor/htmx/bundle.js"></script>
+    <script>
+        function copyToClipboard(element) {
+            const commandElement = element.closest('.language-none').querySelector('.command')
+            const copyText = commandElement.value === undefined ? commandElement.textContent.trim() : commandElement.value
+            const textArea = document.createElement("textarea")
+
+            textArea.value = copyText
+            document.body.appendChild(textArea)
+
+            textArea.select()
+            document.execCommand("copy")
+            document.body.removeChild(textArea)
+
+            const copyIcon = element.querySelector(".copy-icon")
+            const checkIcon = element.querySelector(".check-icon")
+
+            copyIcon.classList.add('hidden')
+            checkIcon.classList.remove('hidden')
+
+            setTimeout(() => {
+                copyIcon.classList.remove('hidden')
+                checkIcon.classList.add('hidden')
+            }, 2000)
+        }
+    </script>
+
+
+    <title>gemma2</title>
+    <meta property="og:title" content="gemma2" />
+    <meta property="twitter:title" content="gemma2" />
+    <meta property="og:url" content="https://ollama.com/library/gemma2" />
+    <link rel="canonical" href="https://ollama.com/library/gemma2" />
+
+    <meta property="og:description" content="Google Gemma 2 is now available in 2 sizes, 9B and 27B." />
+    <meta property="twitter:description" content="Google Gemma 2 is now available in 2 sizes, 9B and 27B." />
+</head>
+<body>
+
+<header class="sticky top-0 md:static bg-white underline-offset-4 z-40">
+
+    <nav class="flex w-full px-6 py-4 items-center justify-between md:hidden">
+        <a href="/" class="z-50">
+            <img src="/public/ollama.png" class="w-6" alt="Ollama" />
+        </a>
+        <input type="checkbox" id="menu" class="hidden peer">
+        <label for="menu" class="peer-checked:hidden cursor-pointer z-50">
+            <svg class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+            </svg>
+        </label>
+        <label for="menu" class="hidden peer-checked:block cursor-pointer z-50">
+            <svg class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+        </label>
+        <div class="peer-checked:flex fixed bg-white hidden top-0 pt-24 h-screen right-0 w-full sm:hidden flex-col px-6 py-4 text-3xl space-y-6 tracking-tight">
+            <a href="/library">Models</a>
+            <a href="/search">Search</a>
+            <a href="https://discord.com/invite/ollama">Discord</a>
+            <a href="https://github.com/ollama/ollama">GitHub</a>
+            <a href="/download">Download</a>
+
+
+            <a class="block" href="/login">Sign in</a>
+
+        </div>
+    </nav>
+    <nav class="hidden select-none mx-auto md:flex justify-between items-center px-6 py-3.5 text-md md:text-lg">
+        <div class="flex items-center space-x-8">
+            <a class="mr-2" href="/"><img src="/public/ollama.png" class="w-8" alt="Ollama" /></a>
+            <a class="hover:underline" href="/blog">Blog</a>
+            <a class="hover:underline" target="_blank" href="https://discord.com/invite/ollama">
+                Discord
+            </a>
+            <a class="hover:underline" target="_blank" href="https://github.com/ollama/ollama">
+                GitHub
+            </a>
+        </div>
+        <div class="flex space-x-8 items-center">
+
+            <div class="hidden lg:flex items-center flex-grow relative w-full max-w-[500px] pl-8">
+                <div id="searchContainer" class="relative flex items-center rounded-lg border border-neutral-200">
+          <span id="searchIcon" class="pl-2 text-2xl text-neutral-500">
+            <svg class="w-4 h-4 ml-1 mt-0.25 fill-current" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+              <path d="m8.5 3c3.0375661 0 5.5 2.46243388 5.5 5.5 0 1.24832096-.4158777 2.3995085-1.1166416 3.3225711l4.1469717 4.1470988c.2928932.2928932.2928932.767767 0 1.0606602-.2662666.2662665-.6829303.2904726-.9765418.0726181l-.0841184-.0726181-4.1470988-4.1469717c-.9230626.7007639-2.07425014 1.1166416-3.3225711 1.1166416-3.03756612 0-5.5-2.4624339-5.5-5.5 0-3.03756612 2.46243388-5.5 5.5-5.5zm0 1.5c-2.209139 0-4 1.790861-4 4s1.790861 4 4 4 4-1.790861 4-4-1.790861-4-4-4z"/></svg>
+              </svg>
+          </span>
+                    <input id="search" hx-get="/search-preview" hx-trigger="keyup changed delay:800ms, focus" hx-target="#popup"
+                           name="q" class="w-full resize-none rounded-lg border-0 py-1.5 pr-10 text-sm
+                            focus:outline-none focus:ring-0" placeholder="Search models" autocomplete="off"
+                           value="" />
+                    <div id="popup" class="absolute hidden left-0 right-0 top-full z-50">
+
+                    </div>
+                </div>
+            </div>
+
+            <a class="hover:underline" href="/library">Models</a>
+
+            <a class="hover:underline min-w-fit" href="/login">Sign in</a>
+
+            <a class="flex cursor-pointer items-center rounded-lg bg-neutral-800 px-4 py-1 text-white hover:bg-black" href="/download">
+                Download
+            </a>
+        </div>
+    </nav>
+</header>
+<script>
+    const searchInput = document.getElementById('search');
+    const popup = document.getElementById('popup');
+
+    document.addEventListener('DOMContentLoaded', function () {
+        var searchIcon = document.getElementById('searchIcon');
+        if (searchIcon !== null) {
+            searchIcon.addEventListener('click', function() {
+                searchInput.focus();
+            });
+        }
+
+
+        if (searchInput !== null) {
+            searchInput.addEventListener('focus', function () {
+                document.getElementById('searchContainer').classList.add('border-blue-400', 'outline-none', 'ring', 'ring-blue-300', 'ring-opacity-75');
+                popup.classList.remove('hidden');
+                searchInput.addEventListener('keydown', handleKeyPress);
+            });
+
+            searchInput.addEventListener('focusout', function (event) {
+
+                setTimeout(function () {
+
+                    if (!popup.contains(event.relatedTarget)) {
+                        hideSearchPopup();
+                        searchInput.blur();
+                    }
+                }, 150);
+            });
+
+            searchInput.addEventListener('keydown', function(event) {
+                if (event.key === 'Escape') {
+                    hideSearchPopup();
+                    searchInput.blur();
+                }
+            });
+        }
+    });
+
+    document.addEventListener('keydown', function(event) {
+        if (event.key === 'Tab') {
+            setTimeout(() => {
+                if (searchInput !== null && popup !== null && !searchInput.contains(document.activeElement) && !popup.contains(document.activeElement)) {
+                    searchInput.blur();
+                    hideSearchPopup();
+                }
+            }, 0);
+        }
+    });
+
+    function handleKeyPress(event) {
+        if (event.key === 'Enter') {
+            event.preventDefault();
+            var query = document.getElementById('search').value;
+            window.location.href = '/search?q=' + encodeURIComponent(query) + '&p=1';
+        }
+    }
+
+    function hideSearchPopup() {
+        document.getElementById('searchContainer').classList.remove('border-blue-400', 'outline-none', 'ring', 'ring-blue-300', 'ring-opacity-75');
+        document.getElementById('popup').classList.add('hidden');
+        searchInput.removeEventListener('keydown', handleKeyPress);
+    }
+</script>
+
+
+<div class="flex flex-1 justify-center">
+    <main class="mx-auto flex w-full max-w-[50rem] flex-col px-6 pb-10 md:pb-24 lg:px-8 pt-10 md:pt-24">
+
+
+        <section class="flex flex-col">
+            <div class="flex justify-between items-baseline mb-3">
+                <h1 class="flex items-center sm:text-[28px] text-xl tracking-tight">
+
+                    <a
+                            href="/library/gemma2"
+                            class="font-medium min-w-0 text-black decoration-2 leading-normal underline-offset-[5px] hover:underline truncate"
+                    >
+                        gemma2
+                    </a>
+
+                </h1>
+
+            </div>
+
+            <h2 hx-target="this" hx-swap="outerHTML" class="break-words sm:max-w-md">
+                Google Gemma 2 is now available in 2 sizes, 9B and 27B.
+            </h2>
+
+
+            <div class="flex flex-wrap space-x-2 pt-2">
+
+
+                <span class="inline-flex items-center rounded-md bg-[#ddf4ff] px-2 py-[2px] text-xs sm:text-[13px] font-medium text-blue-600">9B</span>
+
+                <span class="inline-flex items-center rounded-md bg-[#ddf4ff] px-2 py-[2px] text-xs sm:text-[13px] font-medium text-blue-600">27B</span>
+
+            </div>
+
+            <p class="my-4 flex space-x-5 text-[13px] font-medium text-neutral-500">
+    
+      <span class="flex items-center" title="285829 pulls">
+        <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke-width="2"
+                stroke="currentColor"
+                class="mr-1.5 h-4 w-4"
+        >
+          <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3"
+          />
+        </svg>
+        285.8K
+        Pulls
+      </span>
+
+                <span id="updated" class="flex items-center">
+      <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="2"
+              stroke="currentColor"
+              class="mr-1.5 h-4 w-4"
+      >
+      <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+      />
+    </svg>
+      <span id="updateMessage">Updated 9 days ago</span>
+    </span>
+            </p>
+        </section>
+
+
+
+
+        <section class="my-4 md:mt-10 md:mb-2">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            <div id="tag-dropdown" class="flex w-full flex-col space-y-2 md:flex-row md:items-center md:justify-between md:space-y-0" data-is-secondary-tag-selected="false">
+                <div class="flex items-center md:flex-initial space-x-4">
+                    <div class="relative inline-block text-left">
+                        <button onclick="buttonHandler()" type="button" class="inline-flex w-48 justify-between gap-x-1.5 rounded-md bg-white px-4 py-2 text-sm items-center font-medium text-neutral-900 shadow-sm ring-1 ring-inset ring-neutral-300 hover:bg-neutral-50" id="menu-button">
+                            <div class="truncate">
+                                9b
+                            </div>
+                            <svg class="-mr-1 h-5 w-5 text-neutral-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd" />
+                            </svg>
+                        </button>
+                        <div class="absolute left-0 z-10 mt-2 w-60 origin-top-right bg-white rounded-lg overflow-hidden shadow-lg ring-1 ring-neutral-300 focus:outline-none opacity-0 scale-95 transition-transform duration-300 hidden" id="menu-dropdown" role="menu">
+                            <div class="flex flex-col max-h-64 min-h-min divide-y divide-neutral-200">
+                                <div class="flex-1 overflow-y-auto divide-y divide-neutral-200">
+
+                                    <div id="primary-tags">
+
+                                        <a href="/library/gemma2:latest" class="group text-neutral-700 flex px-4 py-2 text-sm items-center space-x-2 justify-between w-full bg-white">
+                                            <div class="flex space-x-2 items-center">
+                  <span title="latest" class="truncate group-hover:underline">
+                    latest
+                  </span>
+
+                                            </div>
+                                            <span class="text-neutral-400 text-xs">5.4GB</span>
+                                        </a>
+
+                                        <a href="/library/gemma2:27b" class="group text-neutral-700 flex px-4 py-2 text-sm items-center space-x-2 justify-between w-full bg-white">
+                                            <div class="flex space-x-2 items-center">
+                  <span title="27b" class="truncate group-hover:underline">
+                    27b
+                  </span>
+
+                                            </div>
+                                            <span class="text-neutral-400 text-xs">16GB</span>
+                                        </a>
+
+                                        <a href="/library/gemma2:9b" class="group text-neutral-700 flex px-4 py-2 text-sm items-center space-x-2 justify-between w-full bg-neutral-100">
+                                            <div class="flex space-x-2 items-center">
+                  <span title="9b" class="truncate group-hover:underline">
+                    9b
+                  </span>
+
+                                                <span class="inline-flex items-center rounded-md bg-green-50 px-2 py-0.5 text-xs font-medium text-green-700 ring-1 ring-inset ring-green-600/20">latest</span>
+
+                                            </div>
+                                            <span class="text-neutral-400 text-xs">5.4GB</span>
+                                        </a>
+
+                                    </div>
+
+
+                                    <div id="secondary-tags" class="hidden">
+
+                                        <a href="/library/gemma2:27b-instruct-fp16" class="group text-neutral-700 flex px-4 py-2 text-sm items-center space-x-2 justify-between w-full bg-white">
+                                            <div class="flex space-x-2 items-center">
+                  <span title="27b-instruct-fp16" class="truncate group-hover:underline">
+                    27b-instruct-fp16
+                  </span>
+
+                                            </div>
+                                            <span class="text-neutral-400 text-xs">54GB</span>
+                                        </a>
+
+                                        <a href="/library/gemma2:27b-instruct-q2_K" class="group text-neutral-700 flex px-4 py-2 text-sm items-center space-x-2 justify-between w-full bg-white">
+                                            <div class="flex space-x-2 items-center">
+                  <span title="27b-instruct-q2_K" class="truncate group-hover:underline">
+                    27b-instruct-q2_K
+                  </span>
+
+                                            </div>
+                                            <span class="text-neutral-400 text-xs">10GB</span>
+                                        </a>
+
+                                        <a href="/library/gemma2:27b-instruct-q3_K_L" class="group text-neutral-700 flex px-4 py-2 text-sm items-center space-x-2 justify-between w-full bg-white">
+                                            <div class="flex space-x-2 items-center">
+                  <span title="27b-instruct-q3_K_L" class="truncate group-hover:underline">
+                    27b-instruct-q3_K_L
+                  </span>
+
+                                            </div>
+                                            <span class="text-neutral-400 text-xs">15GB</span>
+                                        </a>
+
+                                        <a href="/library/gemma2:27b-instruct-q3_K_M" class="group text-neutral-700 flex px-4 py-2 text-sm items-center space-x-2 justify-between w-full bg-white">
+                                            <div class="flex space-x-2 items-center">
+                  <span title="27b-instruct-q3_K_M" class="truncate group-hover:underline">
+                    27b-instruct-q3_K_M
+                  </span>
+
+                                            </div>
+                                            <span class="text-neutral-400 text-xs">13GB</span>
+                                        </a>
+
+                                        <a href="/library/gemma2:27b-instruct-q3_K_S" class="group text-neutral-700 flex px-4 py-2 text-sm items-center space-x-2 justify-between w-full bg-white">
+                                            <div class="flex space-x-2 items-center">
+                  <span title="27b-instruct-q3_K_S" class="truncate group-hover:underline">
+                    27b-instruct-q3_K_S
+                  </span>
+
+                                            </div>
+                                            <span class="text-neutral-400 text-xs">12GB</span>
+                                        </a>
+
+                                        <a href="/library/gemma2:27b-instruct-q4_0" class="group text-neutral-700 flex px-4 py-2 text-sm items-center space-x-2 justify-between w-full bg-white">
+                                            <div class="flex space-x-2 items-center">
+                  <span title="27b-instruct-q4_0" class="truncate group-hover:underline">
+                    27b-instruct-q4_0
+                  </span>
+
+                                            </div>
+                                            <span class="text-neutral-400 text-xs">16GB</span>
+                                        </a>
+
+                                        <a href="/library/gemma2:27b-instruct-q4_1" class="group text-neutral-700 flex px-4 py-2 text-sm items-center space-x-2 justify-between w-full bg-white">
+                                            <div class="flex space-x-2 items-center">
+                  <span title="27b-instruct-q4_1" class="truncate group-hover:underline">
+                    27b-instruct-q4_1
+                  </span>
+
+                                            </div>
+                                            <span class="text-neutral-400 text-xs">17GB</span>
+                                        </a>
+
+                                        <a href="/library/gemma2:27b-instruct-q4_K_M" class="group text-neutral-700 flex px-4 py-2 text-sm items-center space-x-2 justify-between w-full bg-white">
+                                            <div class="flex space-x-2 items-center">
+                  <span title="27b-instruct-q4_K_M" class="truncate group-hover:underline">
+                    27b-instruct-q4_K_M
+                  </span>
+
+                                            </div>
+                                            <span class="text-neutral-400 text-xs">17GB</span>
+                                        </a>
+
+                                        <a href="/library/gemma2:27b-instruct-q4_K_S" class="group text-neutral-700 flex px-4 py-2 text-sm items-center space-x-2 justify-between w-full bg-white">
+                                            <div class="flex space-x-2 items-center">
+                  <span title="27b-instruct-q4_K_S" class="truncate group-hover:underline">
+                    27b-instruct-q4_K_S
+                  </span>
+
+                                            </div>
+                                            <span class="text-neutral-400 text-xs">16GB</span>
+                                        </a>
+
+                                        <a href="/library/gemma2:27b-instruct-q5_0" class="group text-neutral-700 flex px-4 py-2 text-sm items-center space-x-2 justify-between w-full bg-white">
+                                            <div class="flex space-x-2 items-center">
+                  <span title="27b-instruct-q5_0" class="truncate group-hover:underline">
+                    27b-instruct-q5_0
+                  </span>
+
+                                            </div>
+                                            <span class="text-neutral-400 text-xs">19GB</span>
+                                        </a>
+
+                                        <a href="/library/gemma2:27b-instruct-q5_1" class="group text-neutral-700 flex px-4 py-2 text-sm items-center space-x-2 justify-between w-full bg-white">
+                                            <div class="flex space-x-2 items-center">
+                  <span title="27b-instruct-q5_1" class="truncate group-hover:underline">
+                    27b-instruct-q5_1
+                  </span>
+
+                                            </div>
+                                            <span class="text-neutral-400 text-xs">21GB</span>
+                                        </a>
+
+                                        <a href="/library/gemma2:27b-instruct-q5_K_M" class="group text-neutral-700 flex px-4 py-2 text-sm items-center space-x-2 justify-between w-full bg-white">
+                                            <div class="flex space-x-2 items-center">
+                  <span title="27b-instruct-q5_K_M" class="truncate group-hover:underline">
+                    27b-instruct-q5_K_M
+                  </span>
+
+                                            </div>
+                                            <span class="text-neutral-400 text-xs">19GB</span>
+                                        </a>
+
+                                        <a href="/library/gemma2:27b-instruct-q5_K_S" class="group text-neutral-700 flex px-4 py-2 text-sm items-center space-x-2 justify-between w-full bg-white">
+                                            <div class="flex space-x-2 items-center">
+                  <span title="27b-instruct-q5_K_S" class="truncate group-hover:underline">
+                    27b-instruct-q5_K_S
+                  </span>
+
+                                            </div>
+                                            <span class="text-neutral-400 text-xs">19GB</span>
+                                        </a>
+
+                                        <a href="/library/gemma2:27b-instruct-q6_K" class="group text-neutral-700 flex px-4 py-2 text-sm items-center space-x-2 justify-between w-full bg-white">
+                                            <div class="flex space-x-2 items-center">
+                  <span title="27b-instruct-q6_K" class="truncate group-hover:underline">
+                    27b-instruct-q6_K
+                  </span>
+
+                                            </div>
+                                            <span class="text-neutral-400 text-xs">22GB</span>
+                                        </a>
+
+                                        <a href="/library/gemma2:27b-instruct-q8_0" class="group text-neutral-700 flex px-4 py-2 text-sm items-center space-x-2 justify-between w-full bg-white">
+                                            <div class="flex space-x-2 items-center">
+                  <span title="27b-instruct-q8_0" class="truncate group-hover:underline">
+                    27b-instruct-q8_0
+                  </span>
+
+                                            </div>
+                                            <span class="text-neutral-400 text-xs">29GB</span>
+                                        </a>
+
+                                        <a href="/library/gemma2:9b-instruct-fp16" class="group text-neutral-700 flex px-4 py-2 text-sm items-center space-x-2 justify-between w-full bg-white">
+                                            <div class="flex space-x-2 items-center">
+                  <span title="9b-instruct-fp16" class="truncate group-hover:underline">
+                    9b-instruct-fp16
+                  </span>
+
+                                            </div>
+                                            <span class="text-neutral-400 text-xs">18GB</span>
+                                        </a>
+
+                                        <a href="/library/gemma2:9b-instruct-q2_K" class="group text-neutral-700 flex px-4 py-2 text-sm items-center space-x-2 justify-between w-full bg-white">
+                                            <div class="flex space-x-2 items-center">
+                  <span title="9b-instruct-q2_K" class="truncate group-hover:underline">
+                    9b-instruct-q2_K
+                  </span>
+
+                                            </div>
+                                            <span class="text-neutral-400 text-xs">3.8GB</span>
+                                        </a>
+
+                                        <a href="/library/gemma2:9b-instruct-q3_K_L" class="group text-neutral-700 flex px-4 py-2 text-sm items-center space-x-2 justify-between w-full bg-white">
+                                            <div class="flex space-x-2 items-center">
+                  <span title="9b-instruct-q3_K_L" class="truncate group-hover:underline">
+                    9b-instruct-q3_K_L
+                  </span>
+
+                                            </div>
+                                            <span class="text-neutral-400 text-xs">5.1GB</span>
+                                        </a>
+
+                                        <a href="/library/gemma2:9b-instruct-q3_K_M" class="group text-neutral-700 flex px-4 py-2 text-sm items-center space-x-2 justify-between w-full bg-white">
+                                            <div class="flex space-x-2 items-center">
+                  <span title="9b-instruct-q3_K_M" class="truncate group-hover:underline">
+                    9b-instruct-q3_K_M
+                  </span>
+
+                                            </div>
+                                            <span class="text-neutral-400 text-xs">4.8GB</span>
+                                        </a>
+
+                                        <a href="/library/gemma2:9b-instruct-q3_K_S" class="group text-neutral-700 flex px-4 py-2 text-sm items-center space-x-2 justify-between w-full bg-white">
+                                            <div class="flex space-x-2 items-center">
+                  <span title="9b-instruct-q3_K_S" class="truncate group-hover:underline">
+                    9b-instruct-q3_K_S
+                  </span>
+
+                                            </div>
+                                            <span class="text-neutral-400 text-xs">4.3GB</span>
+                                        </a>
+
+                                        <a href="/library/gemma2:9b-instruct-q4_0" class="group text-neutral-700 flex px-4 py-2 text-sm items-center space-x-2 justify-between w-full bg-white">
+                                            <div class="flex space-x-2 items-center">
+                  <span title="9b-instruct-q4_0" class="truncate group-hover:underline">
+                    9b-instruct-q4_0
+                  </span>
+
+                                            </div>
+                                            <span class="text-neutral-400 text-xs">5.4GB</span>
+                                        </a>
+
+                                        <a href="/library/gemma2:9b-instruct-q4_1" class="group text-neutral-700 flex px-4 py-2 text-sm items-center space-x-2 justify-between w-full bg-white">
+                                            <div class="flex space-x-2 items-center">
+                  <span title="9b-instruct-q4_1" class="truncate group-hover:underline">
+                    9b-instruct-q4_1
+                  </span>
+
+                                            </div>
+                                            <span class="text-neutral-400 text-xs">6.0GB</span>
+                                        </a>
+
+                                        <a href="/library/gemma2:9b-instruct-q4_K_M" class="group text-neutral-700 flex px-4 py-2 text-sm items-center space-x-2 justify-between w-full bg-white">
+                                            <div class="flex space-x-2 items-center">
+                  <span title="9b-instruct-q4_K_M" class="truncate group-hover:underline">
+                    9b-instruct-q4_K_M
+                  </span>
+
+                                            </div>
+                                            <span class="text-neutral-400 text-xs">5.8GB</span>
+                                        </a>
+
+                                        <a href="/library/gemma2:9b-instruct-q4_K_S" class="group text-neutral-700 flex px-4 py-2 text-sm items-center space-x-2 justify-between w-full bg-white">
+                                            <div class="flex space-x-2 items-center">
+                  <span title="9b-instruct-q4_K_S" class="truncate group-hover:underline">
+                    9b-instruct-q4_K_S
+                  </span>
+
+                                            </div>
+                                            <span class="text-neutral-400 text-xs">5.5GB</span>
+                                        </a>
+
+                                        <a href="/library/gemma2:9b-instruct-q5_0" class="group text-neutral-700 flex px-4 py-2 text-sm items-center space-x-2 justify-between w-full bg-white">
+                                            <div class="flex space-x-2 items-center">
+                  <span title="9b-instruct-q5_0" class="truncate group-hover:underline">
+                    9b-instruct-q5_0
+                  </span>
+
+                                            </div>
+                                            <span class="text-neutral-400 text-xs">6.5GB</span>
+                                        </a>
+
+                                        <a href="/library/gemma2:9b-instruct-q5_1" class="group text-neutral-700 flex px-4 py-2 text-sm items-center space-x-2 justify-between w-full bg-white">
+                                            <div class="flex space-x-2 items-center">
+                  <span title="9b-instruct-q5_1" class="truncate group-hover:underline">
+                    9b-instruct-q5_1
+                  </span>
+
+                                            </div>
+                                            <span class="text-neutral-400 text-xs">7.0GB</span>
+                                        </a>
+
+                                        <a href="/library/gemma2:9b-instruct-q5_K_M" class="group text-neutral-700 flex px-4 py-2 text-sm items-center space-x-2 justify-between w-full bg-white">
+                                            <div class="flex space-x-2 items-center">
+                  <span title="9b-instruct-q5_K_M" class="truncate group-hover:underline">
+                    9b-instruct-q5_K_M
+                  </span>
+
+                                            </div>
+                                            <span class="text-neutral-400 text-xs">6.6GB</span>
+                                        </a>
+
+                                        <a href="/library/gemma2:9b-instruct-q5_K_S" class="group text-neutral-700 flex px-4 py-2 text-sm items-center space-x-2 justify-between w-full bg-white">
+                                            <div class="flex space-x-2 items-center">
+                  <span title="9b-instruct-q5_K_S" class="truncate group-hover:underline">
+                    9b-instruct-q5_K_S
+                  </span>
+
+                                            </div>
+                                            <span class="text-neutral-400 text-xs">6.5GB</span>
+                                        </a>
+
+                                        <a href="/library/gemma2:9b-instruct-q6_K" class="group text-neutral-700 flex px-4 py-2 text-sm items-center space-x-2 justify-between w-full bg-white">
+                                            <div class="flex space-x-2 items-center">
+                  <span title="9b-instruct-q6_K" class="truncate group-hover:underline">
+                    9b-instruct-q6_K
+                  </span>
+
+                                            </div>
+                                            <span class="text-neutral-400 text-xs">7.6GB</span>
+                                        </a>
+
+                                        <a href="/library/gemma2:9b-instruct-q8_0" class="group text-neutral-700 flex px-4 py-2 text-sm items-center space-x-2 justify-between w-full bg-white">
+                                            <div class="flex space-x-2 items-center">
+                  <span title="9b-instruct-q8_0" class="truncate group-hover:underline">
+                    9b-instruct-q8_0
+                  </span>
+
+                                            </div>
+                                            <span class="text-neutral-400 text-xs">9.8GB</span>
+                                        </a>
+
+                                    </div>
+
+                                </div>
+
+                                <div role="none" id="view-more-tags" class="block">
+                                    <button onclick="handleViewMoreTags()" class="text-blue-500 w-full text-center block p-2.5 text-sm hover:underline hover:cursor-pointer" role="menuitem" id="menu-item-6">View more</button>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <p class="flex text-sm font-medium text-neutral-500">
+                        <a class="flex items-center hover:underline underline-offset-[3px] decoration-[.75px]" href="/library/gemma2/tags">
+                            <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    stroke-width="2"
+                                    stroke="currentColor"
+                                    class="mr-1 h-4 w-4"
+                            >
+                                <path
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        d="M9.568 3H5.25A2.25 2.25 0 003 5.25v4.318c0 .597.237 1.17.659 1.591l9.581 9.581c.699.699 1.78.872 2.607.33a18.095 18.095 0 005.223-5.223c.542-.827.369-1.908-.33-2.607L11.16 3.66A2.25 2.25 0 009.568 3z"
+                                />
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M6 6h.008v.008H6V6z" />
+                            </svg>
+                            33&nbsp;Tags
+                        </a>
+                    </p>
+                </div>
+
+                <div class="hidden md:flex md:flex-grow md:justify-end md:space-x-4">
+                    <div class="language-none flex w-full flex-1 items-center justify-between rounded-lg border border-neutral-200 font-mono font-medium text-neutral-600 focus:border-neutral-200 focus:ring-0 focus:ring-transparent md:max-w-xs">
+                        <input
+                                id="command-input"
+                                type="text"
+                                class="command relative w-full border-0 border-r-[1px] border-neutral-200 bg-transparent align-middle text-[13px] focus:border-neutral-200 focus:outline-none focus:ring-0 focus:ring-transparent"
+                                value="ollama run gemma2"
+                                readonly
+                        />
+
+                        <button
+                                class="cursor-pointer px-2 py-1 text-neutral-500 hover:text-black focus:outline-none"
+                                onclick="copyToClipboard(this)"
+                        >
+                            <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    stroke-width="1.5"
+                                    stroke="currentColor"
+                                    class="h-5 w-5 copy-icon"
+                            >
+                                <path
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        d="M16.5 8.25V6a2.25 2.25 0 00-2.25-2.25H6A2.25 2.25 0 003.75 6v8.25A2.25 2.25 0 006 16.5h2.25m8.25-8.25H18a2.25 2.25 0 012.25 2.25V18A2.25 2.25 0 0118 20.25h-7.5A2.25 2.25 0 018.25 18v-1.5m8.25-8.25h-6a2.25 2.25 0 00-2.25 2.25v6"
+                                />
+                            </svg>
+                            <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    stroke-width="1.5"
+                                    stroke="currentColor"
+                                    class="w-5 h-5 check-icon hidden">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+                            </svg>
+                        </button>
+
+                    </div>
+                </div>
+
+            </div>
+            <script>
+                function handleViewMoreTags() {
+                    const viewMore = document.getElementById('view-more-tags');
+                    const secondaryTags = document.getElementById('secondary-tags');
+
+                    viewMore.classList.add('hidden');
+                    secondaryTags.classList.remove('hidden');
+                }
+
+                function showDropdown() {
+                    const dropdown = document.getElementById('menu-dropdown')
+                    dropdown.classList.remove('hidden', 'opacity-0', 'scale-95');
+                    dropdown.classList.add('opacity-100', 'scale-100');
+                }
+
+                function hideDropdown() {
+                    const dropdown = document.getElementById('menu-dropdown')
+                    dropdown.classList.add('hidden', 'opacity-0', 'scale-95');
+                    dropdown.classList.remove('opacity-100', 'scale-100');
+                }
+
+                function buttonHandler() {
+                    const isHidden = document.getElementById('menu-dropdown').classList.contains('hidden');
+                    if (isHidden) {
+                        showDropdown();
+
+                        const isSecondaryTagSelected = document.getElementById('tag-dropdown').getAttribute('data-is-secondary-tag-selected') === 'true';
+                        if (isSecondaryTagSelected) {
+                            handleViewMoreModels()
+                        }
+                    } else {
+                        hideDropdown();
+                    }
+                }
+
+                function dropdownHandler() {
+                    document.addEventListener('click', function(event) {
+                        if (!(document.getElementById('menu-button').contains(event.target) || document.getElementById('menu-dropdown').contains(event.target))) {
+                            hideDropdown();
+                        }
+                    });
+                }
+
+                document.addEventListener('DOMContentLoaded', function() {
+                    dropdownHandler();
+                });
+
+                window.addEventListener('popstate', function() {
+                    dropdownHandler();
+                });
+
+                document.addEventListener('keydown', function(event) {
+                    const dropdown = document.getElementById('menu-dropdown')
+
+                    if (event.key === 'Escape') {
+                        hideDropdown();
+                        dropdown.blur();
+                    }
+                    if (event.key === 'Tab') {
+                        setTimeout(() => {
+                            if (!dropdown.contains(document.activeElement)) {
+                                hideDropdown();
+                            }
+                        }, 0);
+                    }
+                });
+            </script>
+
+        </section>
+
+
+
+        <div id="file-explorer">
+            <section class="py-2">
+                <div class="border border-neutral-200 rounded-lg overflow-hidden">
+                    <div class="min-w-full divide-y divide-gray-200">
+                        <div class="px-4 py-3 bg-neutral-50 flex justify-between items-center text-xs text-neutral-900">
+                            <p class="hidden sm:block">Updated 9 days ago</p>
+                            <p class="flex sm:hidden items-center">
+
+                                <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        fill="none"
+                                        viewBox="0 0 24 24"
+                                        stroke-width="1.5"
+                                        stroke="currentColor"
+                                        class="mr-1.5 h-4 w-4"
+                                >
+                                    <path
+                                            stroke-linecap="round"
+                                            stroke-linejoin="round"
+                                            d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+                                    />
+                                </svg>
+                                9 days ago
+                            </p>
+                            <p>
+                                c19987e1e6e2 · 5.4GB
+                            </p>
+                        </div>
+
+
+
+
+                        <a class="block sm:grid sm:grid-cols-12 grid-cols-12 gap-2 px-4 py-3 hover:bg-neutral-100 group"
+
+
+                           href="/library/gemma2/blobs/0da0a4d67fe4"
+                           hx-get="/library/gemma2/blobs/0da0a4d67fe4"
+
+                           hx-target="#file-explorer"
+                           hx-swap="innerHTML"
+                           hx-push-url="true"
+
+                        >
+                            <div class="font-medium text-neutral-800 text-sm group-hover:underline truncate sm:col-start-1 sm:col-span-2">
+                                model
+                            </div>
+                            <div
+                                    class="font-mono text-[13px] text-neutral-400 subpixel-antialiased overflow-hidden text-ellipsis whitespace-nowrap sm:col-start-3 sm:col-span-8">
+
+                                <div class="space-x-2 flex text-sm">
+
+                                    <div class="flex sm:space-x-2 items-center"><span class="hidden sm:block">arch</span><span class="text-neutral-400 sm:font-semibold sm:text-neutral-800 sm:text-xs">gemma2</span></div>
+
+
+                                    <div>·</div>
+                                    <div class="flex sm:space-x-2 items-center"><span class="hidden sm:block">parameters</span><span class="text-neutral-400 sm:font-semibold sm:text-neutral-800 sm:text-xs">9.24B</span></div>
+
+
+                                    <div>·</div>
+                                    <div class="flex sm:space-x-2 items-center"><span class="hidden sm:block">quantization</span><span class="text-neutral-400 sm:font-semibold sm:text-neutral-800 sm:text-xs">Q4_0</span></div>
+
+                                </div>
+
+                            </div>
+                            <div class="hidden sm:block text-right text-xs text-neutral-400 sm:col-start-12">
+                                5.4GB
+                            </div>
+                        </a>
+
+
+
+
+
+                        <a class="block sm:grid sm:grid-cols-12 grid-cols-12 gap-2 px-4 py-3 hover:bg-neutral-100 group"
+
+
+                           href="/library/gemma2/blobs/097a36493f71"
+                           hx-get="/library/gemma2/blobs/097a36493f71"
+
+                           hx-target="#file-explorer"
+                           hx-swap="innerHTML"
+                           hx-push-url="true"
+
+                        >
+                            <div class="font-medium text-neutral-800 text-sm group-hover:underline truncate sm:col-start-1 sm:col-span-2">
+                                license
+                            </div>
+                            <div
+                                    class="font-mono text-[13px] text-neutral-400 subpixel-antialiased overflow-hidden text-ellipsis whitespace-nowrap sm:col-start-3 sm:col-span-8">
+
+                                Gemma Terms of Use
+
+                                Last modified: February 21, 2024
+
+                                By using, reproducing, modifying, distributing, performing or displaying any portion or element of Gemma, Model Derivatives including via any Hosted Service, (each as defined below) (collectively, the &#34;Gemma Services&#34;) or otherwise accepting the terms of this Agreement, you agree to be bound by this Agreement.
+
+                                Section 1: DEFINITIONS
+                                1.1 Definitions
+                                (a) &#34;Agreement&#34; or &#34;Gemma Terms of Use&#34; means these terms and conditions that govern the use, reproduction, Distribution or modification of the Gemma Services and any terms and conditions incorporated by reference.
+
+                                (b) &#34;Distribution&#34; or &#34;Distribute&#34; means any transmission, publication, or other sharing of Gemma or Model Derivatives to a third party, including by providing or making Gemma or its functionality available as a hosted service via API, web access, or any other electronic or remote means (&#34;Hosted Service&#34;).
+
+                                (c) &#34;Gemma&#34; means the set of machine learning language models, trained model weights and parameters identified at ai.google.dev/gemma, regardless of the source that you obtained it from.
+
+                                (d) &#34;Google&#34; means Google LLC.
+
+                                (e) &#34;Model Derivatives&#34; means all (i) modifications to Gemma, (ii) works based on Gemma, or (iii) any other machine learning model which is created by transfer of patterns of the weights, parameters, operations, or Output of Gemma, to that model in order to cause that model to perform similarly to Gemma, including distillation methods that use intermediate data representations or methods based on the generation of synthetic data Outputs by Gemma for training that model. For clarity, Outputs are not deemed Model Derivatives.
+
+                                (f) &#34;Output&#34; means the information content output of Gemma or a Model Derivative that results from operating or otherwise using Gemma or the Model Derivative, including via a Hosted Service.
+
+                                1.2
+                                As used in this Agreement, &#34;including&#34; means &#34;including without limitation&#34;.
+
+                                Section 2: ELIGIBILITY AND USAGE
+                                2.1 Eligibility
+                                You represent and warrant that you have the legal capacity to enter into this Agreement (including being of sufficient age of consent). If you are accessing or using any of the Gemma Services for or on behalf of a legal entity, (a) you are entering into this Agreement on behalf of yourself and that legal entity, (b) you represent and warrant that you have the authority to act on behalf of and bind that entity to this Agreement and (c) references to &#34;you&#34; or &#34;your&#34; in the remainder of this Agreement refers to both you (as an individual) and that entity.
+
+                                2.2 Use
+                                You may use, reproduce, modify, Distribute, perform or display any of the Gemma Services only in accordance with the terms of this Agreement, and must not violate (or encourage or permit anyone else to violate) any term of this Agreement.
+
+                                Section 3: DISTRIBUTION AND RESTRICTIONS
+                                3.1 Distribution and Redistribution
+                                You may reproduce or Distribute copies of Gemma or Model Derivatives if you meet all of the following conditions:
+
+                                You must include the use restrictions referenced in Section 3.2 as an enforceable provision in any agreement (e.g., license agreement, terms of use, etc.) governing the use and/or distribution of Gemma or Model Derivatives and you must provide notice to subsequent users you Distribute to that Gemma or Model Derivatives are subject to the use restrictions in Section 3.2.
+                                You must provide all third party recipients of Gemma or Model Derivatives a copy of this Agreement.
+                                You must cause any modified files to carry prominent notices stating that you modified the files.
+                                All Distributions (other than through a Hosted Service) must be accompanied by a &#34;Notice&#34; text file that contains the following notice: &#34;Gemma is provided under and subject to the Gemma Terms of Use found at ai.google.dev/gemma/terms&#34;.
+                                You may add your own intellectual property statement to your modifications and, except as set forth in this Section, may provide additional or different terms and conditions for use, reproduction, or Distribution of your modifications, or for any such Model Derivatives as a whole, provided your use, reproduction, modification, Distribution, performance, and display of Gemma otherwise complies with the terms and conditions of this Agreement. Any additional or different terms and conditions you impose must not conflict with the terms of this Agreement.
+
+                                3.2 Use Restrictions
+                                You must not use any of the Gemma Services:
+
+                                for the restricted uses set forth in the Gemma Prohibited Use Policy at ai.google.dev/gemma/prohibited_use_policy (&#34;Prohibited Use Policy&#34;), which is hereby incorporated by reference into this Agreement; or
+                                in violation of applicable laws and regulations.
+                                To the maximum extent permitted by law, Google reserves the right to restrict (remotely or otherwise) usage of any of the Gemma Services that Google reasonably believes are in violation of this Agreement.
+
+                                3.3 Generated Output
+                                Google claims no rights in Outputs you generate using Gemma. You and your users are solely responsible for Outputs and their subsequent uses.
+
+                                Section 4: ADDITIONAL PROVISIONS
+                                4.1 Updates
+                                Google may update Gemma from time to time, and you must make reasonable efforts to use the latest version of Gemma.
+
+                                4.2 Trademarks
+                                Nothing in this Agreement grants you any rights to use Google&#39;s trademarks, trade names, logos or to otherwise suggest endorsement or misrepresent the relationship between you and Google. Google reserves any rights not expressly granted herein.
+
+                                4.3 DISCLAIMER OF WARRANTY
+                                UNLESS REQUIRED BY APPLICABLE LAW, THE GEMMA SERVICES, AND OUTPUTS, ARE PROVIDED ON AN &#34;AS IS&#34; BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING ANY WARRANTIES OR CONDITIONS OF TITLE, NON-INFRINGEMENT, MERCHANTABILITY, OR FITNESS FOR A PARTICULAR PURPOSE. YOU ARE SOLELY RESPONSIBLE FOR DETERMINING THE APPROPRIATENESS OF USING, REPRODUCING, MODIFYING, PERFORMING, DISPLAYING OR OR DISTRIBUTING ANY OF THE GEMMA SERVICES OR OUTPUTS AND ASSUME ANY AND ALL RISKS ASSOCIATED WITH YOUR USE OR DISTRIBUTION OF ANY OF THE GEMMA SERVICES OR OUTPUTS AND YOUR EXERCISE OF RIGHTS AND PERMISSIONS UNDER THIS AGREEMENT.
+
+                                4.4 LIMITATION OF LIABILITY
+                                TO THE FULLEST EXTENT PERMITTED BY APPLICABLE LAW, IN NO EVENT AND UNDER NO LEGAL THEORY, WHETHER IN TORT (INCLUDING NEGLIGENCE), PRODUCT LIABILITY, CONTRACT, OR OTHERWISE, UNLESS REQUIRED BY APPLICABLE LAW, SHALL GOOGLE OR ITS AFFILIATES BE LIABLE TO YOU FOR DAMAGES, INCLUDING ANY DIRECT, INDIRECT, SPECIAL, INCIDENTAL, EXEMPLARY, CONSEQUENTIAL, OR PUNITIVE DAMAGES, OR LOST PROFITS OF ANY KIND ARISING FROM THIS AGREEMENT OR RELATED TO, ANY OF THE GEMMA SERVICES OR OUTPUTS EVEN IF GOOGLE OR ITS AFFILIATES HAVE BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
+
+                                4.5 Term, Termination, and Survival
+                                The term of this Agreement will commence upon your acceptance of this Agreement (including acceptance by your use, modification, or Distribution, reproduction, performance or display of any portion or element of the Gemma Services) and will continue in full force and effect until terminated in accordance with the terms of this Agreement. Google may terminate this Agreement if you are in breach of any term of this Agreement. Upon termination of this Agreement, you must delete and cease use and Distribution of all copies of Gemma and Model Derivatives in your possession or control. Sections 1, 2.1, 3.3, 4.2 to 4.9 shall survive the termination of this Agreement.
+
+                                4.6 Governing Law and Jurisdiction
+                                This Agreement will be governed by the laws of the State of California without regard to choice of law principles. The UN Convention on Contracts for the International Sale of Goods does not apply to this Agreement. The state and federal courts of Santa Clara County, California shall have exclusive jurisdiction of any dispute arising out of this Agreement.
+
+                                4.7 Severability
+                                If any provision of this Agreement is held to be invalid, illegal or unenforceable, the remaining provisions shall be unaffected thereby and remain valid as if such provision had not been set forth herein.
+
+                                4.8 Entire Agreement
+                                This Agreement states all the terms agreed between the parties and supersedes all other agreements between the parties as of the date of acceptance relating to its subject matter.
+
+                                4.9 No Waiver
+                                Google will not be treated as having waived any rights by not exercising (or delaying the exercise of) any rights under this Agreement.
+
+
+
+                            </div>
+                            <div class="hidden sm:block text-right text-xs text-neutral-400 sm:col-start-12">
+                                8.4kB
+                            </div>
+                        </a>
+
+
+
+
+
+                        <a class="block sm:grid sm:grid-cols-12 grid-cols-12 gap-2 px-4 py-3 hover:bg-neutral-100 group"
+
+
+                           href="/library/gemma2/blobs/109037bec39c"
+                           hx-get="/library/gemma2/blobs/109037bec39c"
+
+                           hx-target="#file-explorer"
+                           hx-swap="innerHTML"
+                           hx-push-url="true"
+
+                        >
+                            <div class="font-medium text-neutral-800 text-sm group-hover:underline truncate sm:col-start-1 sm:col-span-2">
+                                template
+                            </div>
+                            <div
+                                    class="font-mono text-[13px] text-neutral-400 subpixel-antialiased overflow-hidden text-ellipsis whitespace-nowrap sm:col-start-3 sm:col-span-8">
+
+                                &lt;start_of_turn&gt;user
+                                {{ if .System }}{{ .System }} {{ end }}{{ .Prompt }}&lt;end_of_turn&gt;
+                                &lt;start_of_turn&gt;model
+                                {{ .Response }}&lt;end_of_turn&gt;
+
+
+                            </div>
+                            <div class="hidden sm:block text-right text-xs text-neutral-400 sm:col-start-12">
+                                136B
+                            </div>
+                        </a>
+
+
+
+
+
+
+
+                        <a class="block sm:grid sm:grid-cols-12 grid-cols-12 gap-2 px-4 py-3 hover:bg-neutral-100 group"
+
+
+                           href="/library/gemma2/blobs/6522ca797f47"
+                           hx-get="/library/gemma2/blobs/6522ca797f47"
+
+                           hx-target="#file-explorer"
+                           hx-swap="innerHTML"
+                           hx-push-url="true"
+
+                        >
+                            <div class="font-medium text-neutral-800 text-sm group-hover:underline truncate sm:col-start-1 sm:col-span-2">
+                                params
+                            </div>
+                            <div
+                                    class="font-mono text-[13px] text-neutral-400 subpixel-antialiased overflow-hidden text-ellipsis whitespace-nowrap sm:col-start-3 sm:col-span-8">
+
+                                {&#34;num_ctx&#34;:4096,&#34;repeat_penalty&#34;:1,&#34;stop&#34;:[&#34;&lt;start_of_turn&gt;&#34;,&#34;&lt;end_of_turn&gt;&#34;]}
+
+
+                            </div>
+                            <div class="hidden sm:block text-right text-xs text-neutral-400 sm:col-start-12">
+                                99B
+                            </div>
+                        </a>
+
+
+                    </div>
+                </div>
+            </section>
+
+            <div class="flex flex-1 flex-col py-16 pb-10" id="readme">
+                <div class="flex justify-between items-center pb-1">
+                    <h2 class="text-base font-semibold leading-6 text-neutral-900">Readme</h2>
+
+                </div>
+                <div>
+                    <div
+                            id="display"
+                            class="prose
+        prose-p:mb-4
+        prose-p:mt-0
+        prose-p:leading-relaxed
+        prose-p:before:hidden
+        prose-p:after:hidden
+
+        prose-ul:mt-1
+        prose-ul:mb-4
+        prose-ul:pl-8
+        marker:prose-ul:text-black
+
+        prose-ol:pl-8
+        prose-ol:mt-1
+        prose-ol:mb-4
+        marker:prose-ol:text-black
+
+        prose-li:mt-0.5
+        prose-li:mb-0
+        prose-li:text-black
+        first:prose-li:mt-0
+
+        prose-headings:font-semibold
+        prose-headings:tracking-tight
+        prose-headings:mt-[1.25em]
+        prose-headings:mb-[0.7em]
+
+        prose-h1:text-[32px]
+        prose-h2:text-2xl
+        prose-h3:text-xl
+        prose-h4:text-lg
+        prose-h5:text-base
+
+        prose-img:mx-auto
+        prose-img:my-12
+
+        prose-video:my-12
+
+        prose-code:bg-neutral-100
+        prose-code:rounded-md
+        prose-code:px-2
+        prose-code:inline-block
+        prose-code:font-normal
+        prose-code:text-[85%]
+        prose-code:leading-relaxed
+        prose-code:text-black
+        prose-code:before:hidden
+        prose-code:after:hidden
+        prose-code:my-0
+
+        prose-pre:bg-neutral-100
+        prose-pre:text-black
+        prose-pre:mb-4
+        prose-pre:mt-0
+        prose-pre:whitespace-pre-wrap
+        prose-pre:rounded-lg
+        prose-pre:px-3
+        prose-pre:py-3
+        prose-pre:text-base
+
+        prose-blockquote:before:hidden
+        prose-blockquote:after:hidden
+        prose-blockquote:not-italic
+        prose-blockquote:font-normal
+        prose-blockquote:text-neutral-500
+
+        prose-table:w-full
+        prose-table:border-collapse
+        prose-table:table-auto
+
+        prose-th:text-center
+        prose-th:break-words
+        prose-th:font-semibold
+
+        prose-td:py-2
+        prose-td:px-4
+        prose-td:text-left
+        prose-td:break-words
+
+        prose-td code:display-inline-block
+        prose-td code:bg-gray-200
+        prose-td code:px-2
+        prose-td code:py-1
+        prose-td code:rounded-md
+
+        max-w-none
+        py-5
+        text-black
+        overflow-auto"
+                    >
+
+                        <p><img src="https://ollama.com/assets/library/gemma2/58a4be20-b402-4dfa-8f1d-05d820f1204f" alt="Ollama in a Noogler hat with the Gemma 2 logo"/></p>
+
+                        <blockquote>
+                            <p>Note: this model requires Ollama 0.1.47 or later. <a href="https://ollama.com/download" rel="nofollow">Download it here</a>.</p>
+                        </blockquote>
+
+                        <p>Google’s Gemma 2 model is available in two sizes, 9B and 27B, featuring a brand new architecture designed for class leading performance and efficiency.</p>
+
+                        <h2>Class leading performance</h2>
+
+                        <p>At 27 billion parameters, Gemma 2 delivers performance surpassing models more than twice its size in benchmarks. This breakthrough efficiency sets a new standard in the open model landscape.</p>
+
+                        <h2>Two sizes: 9B and 27B parameters</h2>
+
+                        <ul>
+                            <li>9B Parameters <code>ollama run gemma2</code><br>
+                            </li>
+                            <li>27B Parameters <code>ollama run gemma2:27b</code><br>
+                            </li>
+                        </ul>
+
+                        <h2>Benchmark</h2>
+
+                        <p><img src="https://ollama.com/assets/library/gemma2/79663012-1c9c-4451-871b-4621f1a898d6" alt="Benchmark"/></p>
+
+                        <h2>Intended Usage</h2>
+
+                        <p>Open Large Language Models (LLMs) have a wide range of applications across<br>
+                            various industries and domains. The following list of potential uses is not<br>
+                            comprehensive. The purpose of this list is to provide contextual information<br>
+                            about the possible use-cases that the model creators considered as part of model<br>
+                            training and development.</p>
+
+                        <ul>
+                            <li>Content Creation and Communication<br>
+
+
+                                <ul>
+                                    <li>Text Generation: These models can be used to generate creative text formats<br>
+                                        such as poems, scripts, code, marketing copy, and email drafts.<br>
+                                    </li>
+                                    <li>Chatbots and Conversational AI: Power conversational interfaces for customer<br>
+                                        service, virtual assistants, or interactive applications.<br>
+                                    </li>
+                                    <li>Text Summarization: Generate concise summaries of a text corpus, research<br>
+                                        papers, or reports.<br>
+                                    </li>
+                                </ul></li>
+                            <li>Research and Education<br>
+
+
+                                <ul>
+                                    <li>Natural Language Processing (NLP) Research: These models can serve as a<br>
+                                        foundation for researchers to experiment with NLP techniques, develop<br>
+                                        algorithms, and contribute to the advancement of the field.<br>
+                                    </li>
+                                    <li>Language Learning Tools: Support interactive language learning experiences,<br>
+                                        aiding in grammar correction or providing writing practice.<br>
+                                    </li>
+                                    <li>Knowledge Exploration: Assist researchers in exploring large bodies of text<br>
+                                        by generating summaries or answering questions about specific topics.<br>
+                                    </li>
+                                </ul></li>
+                        </ul>
+
+                        <h2>Using Gemma 2 with popular tooling</h2>
+
+                        <h3>LangChain</h3>
+
+                        <pre><code>from langchain_community.llms import Ollama
+llm = Ollama(model=&#34;gemma2&#34;)
+llm.invoke(&#34;Why is the sky blue?&#34;)
+</code></pre>
+
+                        <h3>LlamaIndex</h3>
+
+                        <pre><code>from llama_index.llms.ollama import Ollama
+llm = Ollama(model=&#34;gemma2&#34;)
+llm.complete(&#34;Why is the sky blue?&#34;)
+</code></pre>
+
+
+                    </div>
+                </div>
+                <div id="editorContainer" class="hidden pt-4">
+
+                    <script src="/public/vendor/markdown-toolbar-element/markdown-toolbar-element.js"></script>
+                    <div class="border border-neutral-200 rounded-lg overflow-hidden">
+                        <form id="markdownForm">
+                            <header class="flex items-center justify-between border-b px-2 py-1 bg-neutral-50">
+                                <nav role="tablist" class="px-1 py-2 text-sm space-x-2">
+                                    <button type="button" id="writeBtn" onclick="handleEditor(event)" class="text-neutral-800 hover:bg-neutral-100 p-1">Write</button>
+                                    <button type="button" id="previewBtn" onclick="submitMarkdownForm()" class="hover:bg-neutral-100 p-1">Preview</button>
+                                </nav>
+                                <div id="toolbar" class="flex space-x-2 items-center divide-x-[1px] divide-neutral-300 px-1 py-2">
+                                    <markdown-toolbar for="editor" class="flex space-x-2 items-center divide-x-[1px] divide-neutral-300">
+                                        <div class="flex items-center space-x-2">
+                                            <md-header class="flex cursor-pointer focus:outline-none text-neutral-600 hover:bg-neutral-100 p-1">
+                                                <svg viewBox="0 0 28 28" fill="currentColor" class="w-3 h-3" xmlns="http://www.w3.org/2000/svg">
+                                                    <path d="M0 2C0 0.89375 0.89375 0 2 0H5H8C9.10625 0 10 0.89375 10 2C10 3.10625 9.10625 4 8 4H7V11H21V4H20C18.8937 4 18 3.10625 18 2C18 0.89375 18.8937 0 20 0H23H26C27.1063 0 28 0.89375 28 2C28 3.10625 27.1063 4 26 4H25V13V24H26C27.1063 24 28 24.8937 28 26C28 27.1063 27.1063 28 26 28H23H20C18.8937 28 18 27.1063 18 26C18 24.8937 18.8937 24 20 24H21V15H7V24H8C9.10625 24 10 24.8937 10 26C10 27.1063 9.10625 28 8 28H5H2C0.89375 28 0 27.1063 0 26C0 24.8937 0.89375 24 2 24H3V13V4H2C0.89375 4 0 3.10625 0 2Z" />
+                                                </svg>
+                                            </md-header>
+                                            <md-bold class="flex cursor-pointer focus:outline-none text-neutral-600 hover:bg-neutral-100 p-1">
+                                                <svg viewBox="0 0 24 28" fill="currentColor" class="w-3 h-3" xmlns="http://www.w3.org/2000/svg">
+                                                    <path d="M0 2C0 0.89375 0.89375 0 2 0H5H6H14C18.4187 0 22 3.58125 22 8C22 9.95625 21.2938 11.7563 20.125 13.1438C22.4437 14.5438 24 17.0875 24 20C24 24.4187 20.4187 28 16 28H6H5H2C0.89375 28 0 27.1063 0 26C0 24.8937 0.89375 24 2 24H3V14V4H2C0.89375 4 0 3.10625 0 2ZM14 12C16.2062 12 18 10.2062 18 8C18 5.79375 16.2062 4 14 4H7V12H14ZM7 16V24H16C18.2062 24 20 22.2062 20 20C20 17.7938 18.2062 16 16 16H14H7Z"/>
+                                                </svg>
+                                            </md-bold>
+                                            <md-italic class="flex cursor-pointer focus:outline-none text-neutral-600 hover:bg-neutral-100 p-1">
+                                                <svg viewBox="0 0 24 28" fill="currentColor" class="w-3 h-3" xmlns="http://www.w3.org/2000/svg">
+                                                    <path d="M8 2C8 0.89375 8.89375 0 10 0H22C23.1063 0 24 0.89375 24 2C24 3.10625 23.1063 4 22 4H18.3312L10 24H14C15.1063 24 16 24.8937 16 26C16 27.1063 15.1063 28 14 28H2C0.89375 28 0 27.1063 0 26C0 24.8937 0.89375 24 2 24H5.66875L14 4H10C8.89375 4 8 3.10625 8 2Z" />
+                                                </svg>
+                                            </md-italic>
+                                        </div>
+                                        <div class="flex items-center space-x-2 pl-2.5">
+                                            <md-code class="flex cursor-pointer focus:outline-none text-neutral-600 hover:bg-neutral-100 p-1">
+                                                <svg viewBox="0 0 32 26" fill="currentColor" class="w-4 h-4" xmlns="http://www.w3.org/2000/svg">
+                                                    <path d="M19.6402 0.260002C18.7902 0.0150024 17.9052 0.510003 17.6602 1.36L11.2602 23.76C11.0152 24.61 11.5102 25.495 12.3602 25.74C13.2102 25.985 14.0952 25.49 14.3402 24.64L20.7402 2.24C20.9852 1.39 20.4902 0.505002 19.6402 0.260002ZM23.6702 6.265C23.0452 6.89 23.0452 7.905 23.6702 8.53L28.1352 13L23.6652 17.47C23.0402 18.095 23.0402 19.11 23.6652 19.735C24.2902 20.36 25.3052 20.36 25.9302 19.735L31.5302 14.135C32.1552 13.51 32.1552 12.495 31.5302 11.87L25.9302 6.27C25.3052 5.645 24.2902 5.645 23.6652 6.27L23.6702 6.265ZM8.33522 6.265C7.71022 5.64 6.69521 5.64 6.07021 6.265L0.470215 11.865C-0.154785 12.49 -0.154785 13.505 0.470215 14.13L6.07021 19.73C6.69521 20.355 7.71022 20.355 8.33522 19.73C8.96022 19.105 8.96022 18.09 8.33522 17.465L3.86521 13L8.33522 8.53C8.96022 7.905 8.96022 6.89 8.33522 6.265Z" />
+                                                </svg>
+                                            </md-code>
+                                            <md-link class="flex cursor-pointer focus:outline-none text-neutral-600 hover:bg-neutral-100 p-1">
+                                                <svg viewBox="0 0 32 24" fill="currentColor" class="w-4 h-4" xmlns="http://www.w3.org/2000/svg">
+                                                    <path d="M28.9899 12.585C31.8149 9.76001 31.8149 5.18501 28.9899 2.36001C26.4899 -0.139993 22.5499 -0.464993 19.6749 1.59001L19.5949 1.64501C18.8749 2.16001 18.7099 3.16001 19.2249 3.87501C19.7399 4.59001 20.7399 4.76001 21.4549 4.24501L21.5349 4.19001C23.1399 3.04501 25.3349 3.22501 26.7249 4.62001C28.2999 6.19501 28.2999 8.74501 26.7249 10.32L21.1149 15.94C19.5399 17.515 16.9899 17.515 15.4149 15.94C14.0199 14.545 13.8399 12.35 14.9849 10.75L15.0399 10.67C15.5549 9.95001 15.3849 8.95001 14.6699 8.44001C13.9549 7.93001 12.9499 8.09501 12.4399 8.81001L12.3849 8.89001C10.3249 11.76 10.6499 15.7 13.1499 18.2C15.9749 21.025 20.5499 21.025 23.3749 18.2L28.9899 12.585ZM3.00986 11.415C0.184863 14.24 0.184863 18.815 3.00986 21.64C5.50986 24.14 9.44986 24.465 12.3249 22.41L12.4049 22.355C13.1249 21.84 13.2899 20.84 12.7749 20.125C12.2599 19.41 11.2599 19.24 10.5449 19.755L10.4649 19.81C8.85986 20.955 6.66486 20.775 5.27486 19.38C3.69986 17.8 3.69986 15.25 5.27486 13.675L10.8849 8.06001C12.4599 6.48501 15.0099 6.48501 16.5849 8.06001C17.9799 9.45501 18.1599 11.65 17.0149 13.255L16.9599 13.335C16.4449 14.055 16.6149 15.055 17.3299 15.565C18.0449 16.075 19.0499 15.91 19.5599 15.195L19.6149 15.115C21.6749 12.24 21.3499 8.30001 18.8499 5.80001C16.0249 2.97501 11.4499 2.97501 8.62486 5.80001L3.00986 11.415Z" />
+                                                </svg>
+                                            </md-link>
+                                        </div>
+                                    </markdown-toolbar>
+                                    <div class="flex pl-2.5">
+                                        <label class="flex cursor-pointer focus:outline-none text-neutral-600 hover:bg-neutral-100 p-1">
+                                            <svg viewBox="0 0 32 28" fill="currentColor" class="w-4 h-4" xmlns="http://www.w3.org/2000/svg">
+                                                <path d="M0 4C0 1.79375 1.79375 0 4 0H28C30.2062 0 32 1.79375 32 4V24C32 26.2062 30.2062 28 28 28H4C1.79375 28 0 26.2062 0 24V4ZM20.2375 10.6562C19.9562 10.2438 19.4938 10 19 10C18.5062 10 18.0375 10.2438 17.7625 10.6562L12.325 18.6313L10.6687 16.5625C10.3812 16.2063 9.95 16 9.5 16C9.05 16 8.6125 16.2063 8.33125 16.5625L4.33125 21.5625C3.96875 22.0125 3.9 22.6312 4.15 23.15C4.4 23.6687 4.925 24 5.5 24H11.5H13.5H26.5C27.0562 24 27.5688 23.6938 27.825 23.2C28.0813 22.7063 28.05 22.1125 27.7375 21.6562L20.2375 10.6562ZM7 10C7.79565 10 8.55871 9.68393 9.12132 9.12132C9.68393 8.55871 10 7.79565 10 7C10 6.20435 9.68393 5.44129 9.12132 4.87868C8.55871 4.31607 7.79565 4 7 4C6.20435 4 5.44129 4.31607 4.87868 4.87868C4.31607 5.44129 4 6.20435 4 7C4 7.79565 4.31607 8.55871 4.87868 9.12132C5.44129 9.68393 6.20435 10 7 10Z"/>
+                                            </svg>
+                                            <input type="file" onchange="uploadImages(event)" class="hidden" accept=".png, .jpeg, .jpg, .svg, .gif" multiple />
+                                        </label>
+                                    </div>
+                                </div>
+                            </header>
+                            <div class="px-3 pt-3" role="tabpanel" data-tab="write" id="textareaInput">
+      <textarea
+              id="editor"
+              name="markdown"
+              ondrop="handleDrop(event)"
+              ondragover="handleDragOver(event)"
+              placeholder="Add some details"
+              class="border border-gray-200 rounded px-3 py-2 block w-full focus:outline-none focus:ring-2 focus:border-blue-200 min-h-[5rem] max-h-[30em] overflow-y-auto"
+              data-target-autofocus
+      >![Ollama in a Noogler hat with the Gemma 2 logo](https://ollama.com/assets/library/gemma2/58a4be20-b402-4dfa-8f1d-05d820f1204f)
+
+&gt; Note: this model requires Ollama 0.1.47 or later. [Download it here](https://ollama.com/download).
+
+Google&#39;s Gemma 2 model is available in two sizes, 9B and 27B, featuring a brand new architecture designed for class leading performance and efficiency.
+
+## Class leading performance 
+
+At 27 billion parameters, Gemma 2 delivers performance surpassing models more than twice its size in benchmarks. This breakthrough efficiency sets a new standard in the open model landscape. 
+
+## Two sizes: 9B and 27B parameters
+
+* 9B Parameters `ollama run gemma2`
+* 27B Parameters `ollama run gemma2:27b`
+
+## Benchmark
+
+![Benchmark](https://ollama.com/assets/library/gemma2/79663012-1c9c-4451-871b-4621f1a898d6)
+
+## Intended Usage
+
+Open Large Language Models (LLMs) have a wide range of applications across
+various industries and domains. The following list of potential uses is not
+comprehensive. The purpose of this list is to provide contextual information
+about the possible use-cases that the model creators considered as part of model
+training and development.
+
+* Content Creation and Communication
+  * Text Generation: These models can be used to generate creative text formats
+    such as poems, scripts, code, marketing copy, and email drafts.
+  * Chatbots and Conversational AI: Power conversational interfaces for customer
+    service, virtual assistants, or interactive applications.
+  * Text Summarization: Generate concise summaries of a text corpus, research
+    papers, or reports.
+* Research and Education
+  * Natural Language Processing (NLP) Research: These models can serve as a
+    foundation for researchers to experiment with NLP techniques, develop
+    algorithms, and contribute to the advancement of the field.
+  * Language Learning Tools: Support interactive language learning experiences,
+    aiding in grammar correction or providing writing practice.
+  * Knowledge Exploration: Assist researchers in exploring large bodies of text
+    by generating summaries or answering questions about specific topics.
+
+## Using Gemma 2 with popular tooling
+
+### LangChain
+
+```python
+from langchain_community.llms import Ollama
+llm = Ollama(model=&#34;gemma2&#34;)
+llm.invoke(&#34;Why is the sky blue?&#34;)
+```
+
+### LlamaIndex
+
+```python
+from llama_index.llms.ollama import Ollama
+llm = Ollama(model=&#34;gemma2&#34;)
+llm.complete(&#34;Why is the sky blue?&#34;)
+```</textarea>
+                                <div class="my-2 max-w-fit">
+                                    <label class="block w-full p-2 cursor-pointer text-xs font-medium text-neutral-800 bg-white rounded-lg transition ease-in-out hover:bg-neutral-100">
+                                        Paste, drop or click to upload images (.png, .jpeg, .jpg, .svg, .gif)
+                                        <input type="file" onchange="uploadImages(event)" class="hidden" accept=".png, .jpeg, .jpg, .svg, .gif" multiple />
+                                    </label>
+                                </div>
+                            </div>
+                        </form>
+                        <div
+                                role="tabpanel"
+                                id="preview-pane"
+                                class="prose
+    prose-p:mb-4
+    prose-p:mt-0
+    prose-p:leading-relaxed
+    prose-p:before:hidden
+    prose-p:after:hidden
+
+    prose-ul:mt-1
+    prose-ul:mb-4
+    prose-ul:pl-8
+    marker:prose-ul:text-black
+
+    prose-ol:pl-8
+    prose-ol:mt-1
+    prose-ol:mb-4
+    marker:prose-ol:text-black
+
+    prose-li:mt-0.5
+    prose-li:mb-0
+    prose-li:text-black
+    first:prose-li:mt-0
+
+    prose-headings:font-semibold
+    prose-headings:tracking-tight
+    prose-headings:mt-[1.25em]
+    prose-headings:mb-[0.7em]
+
+    prose-h1:text-[32px]
+    prose-h2:text-2xl
+    prose-h3:text-xl
+    prose-h4:text-lg
+    prose-h5:text-base
+
+    prose-img:mx-auto
+    prose-img:my-12
+
+    prose-video:my-12
+
+    prose-code:bg-neutral-100
+    prose-code:rounded-md
+    prose-code:px-2
+    prose-code:inline-block
+    prose-code:font-normal
+    prose-code:text-[85%]
+    prose-code:leading-relaxed
+    prose-code:text-black
+    prose-code:before:hidden
+    prose-code:after:hidden
+    prose-code:my-0
+
+    prose-pre:bg-neutral-100
+    prose-pre:text-black
+    prose-pre:mb-4
+    prose-pre:mt-0
+    prose-pre:whitespace-pre-wrap
+    prose-pre:rounded-lg
+    prose-pre:px-3
+    prose-pre:py-3
+    prose-pre:text-base
+
+    prose-blockquote:before:hidden
+    prose-blockquote:after:hidden
+    prose-blockquote:not-italic
+    prose-blockquote:font-normal
+    prose-blockquote:text-neutral-500
+
+    prose-table:w-full
+    prose-table:border-collapse
+    prose-table:table-auto
+
+    prose-th:text-center
+    prose-th:break-words
+    prose-th:font-semibold
+
+    prose-td:py-2
+    prose-td:px-4
+    prose-td:text-left
+    prose-td:break-words
+
+    prose-td code:display-inline-block
+    prose-td code:bg-gray-200
+    prose-td code:px-2
+    prose-td code:py-1
+    prose-td code:rounded-md
+
+    w-full
+    px-3
+    hidden
+
+    max-w-none
+    py-5
+    text-black
+    overflow-auto"
+                        >
+                        </div>
+                    </div>
+                    <script>
+                        document.getElementById('editor').addEventListener('input', handleInput);
+
+                        function handleInput() {
+                            autoExpandTextarea();
+                            scrollToEditor();
+                        }
+
+                        function setCaretPositionForEditor(editor, start, end) {
+                            editor.selectionStart = start;
+                            editor.selectionEnd = end;
+                            editor.focus();
+                        }
+
+                        function handleKeydownForAll(event) {
+                            const editor = document.getElementById('editor');
+                            const start = editor.selectionStart;
+                            const end = editor.selectionEnd;
+                            const selectedText = editor.value.substring(start, end);
+
+                            if (event.metaKey && event.key === 'p') {
+                                event.preventDefault();
+                                if (document.getElementById('preview-pane').classList.contains('hidden')) {
+                                    submitMarkdownForm();
+                                    setPreviewMode(true);
+                                } else {
+                                    setPreviewMode(false);
+                                    autoExpandTextarea();
+                                    editor.focus();
+                                }
+                            } else if (event.metaKey && event.key === 'Enter') {
+                                event.preventDefault();
+                                save();
+                            } else if (event.key === 'Enter') {
+                                handleEnterKey(editor, start, end);
+                                event.preventDefault();
+                            } else {
+                                handleKeydown(event, editor, start, end, selectedText);
+                            }
+                            autoExpandTextarea();
+                        }
+
+                        function handleKeydown(event, editor, start, end, selectedText) {
+                            if (event.metaKey && event.key === 'b') {
+                                event.preventDefault();
+                                toggleBold(editor, start, end, selectedText);
+                            } else if (event.metaKey && event.key === 'i') {
+                                event.preventDefault();
+                                toggleItalic(editor, start, end, selectedText);
+                            } else if (event.metaKey && event.key === 'k') {
+                                event.preventDefault();
+                                toggleLink(editor, start, end, selectedText);
+                            } else if (event.metaKey && event.shiftKey && event.code === 'Period') {
+                                event.preventDefault();
+
+                                toggleBlockquote(editor, start, end, selectedText);
+                            } else if (event.metaKey && event.shiftKey && event.key === '8') {
+                                event.preventDefault();
+                                toggleUnorderedList(editor, start, end, selectedText);
+                            } else if (event.metaKey && event.shiftKey && event.key === '7') {
+                                event.preventDefault();
+                                toggleOrderedList(editor, start, end, selectedText);
+                            } else {
+                                return;
+                            }
+                        }
+
+                        function scrollToCaret(editor) {
+                            const caretPosition = editor.selectionStart;
+                            const editorValue = editor.value.substring(0, caretPosition);
+                            const textLines = editorValue.split('\n');
+                            const lineCount = textLines.length;
+
+
+                            const lineHeight = parseInt(window.getComputedStyle(editor).lineHeight);
+                            const scrollTop = lineHeight * (lineCount - 1);
+
+
+                            editor.scrollTop = scrollTop;
+                        }
+
+                        function handleEnterKey(editor, start, end) {
+                            const textBefore = editor.value.substring(0, start);
+                            const textAfter = editor.value.substring(end);
+                            const linesBefore = textBefore.split('\n');
+                            const currentLine = linesBefore.pop();
+
+                            const orderedListMatch = currentLine.match(/^(\d+)\. (.*)$/);
+                            const unorderedListMatch = currentLine.match(/^(-|\*) (.*)$/);
+
+                            if (orderedListMatch) {
+                                const nextNumber = parseInt(orderedListMatch[1]) + 1;
+                                const currentItemContent = orderedListMatch[2];
+
+                                if (currentItemContent === '') {
+
+                                    const newText = linesBefore.join('\n') + '\n' + textAfter;
+                                    editor.value = newText;
+                                    setCaretPositionForEditor(editor, start - currentLine.length, start - currentLine.length);
+                                } else {
+
+                                    const newText = textBefore + '\n' + nextNumber + '. ' + textAfter;
+                                    editor.value = newText;
+                                    setCaretPositionForEditor(editor, start + nextNumber.toString().length + 3, start + nextNumber.toString().length + 3);
+                                }
+                            } else if (unorderedListMatch) {
+                                const bullet = unorderedListMatch[1];
+                                const currentItemContent = unorderedListMatch[2];
+
+                                if (currentItemContent === '') {
+
+                                    const newText = linesBefore.join('\n') + '\n' + textAfter;
+                                    editor.value = newText;
+                                    setCaretPositionForEditor(editor, start - currentLine.length, start - currentLine.length);
+                                } else {
+
+                                    const newText = textBefore + '\n' + bullet + ' ' + textAfter;
+                                    editor.value = newText;
+                                    setCaretPositionForEditor(editor, start + bullet.length + 2, start + bullet.length + 2);
+                                }
+                            } else {
+                                const newText = textBefore + '\n' + textAfter;
+                                editor.value = newText;
+                                setCaretPositionForEditor(editor, start + 1, start + 1);
+                            }
+
+                            scrollToCaret(editor);
+                        }
+
+                        function toggleOrderedList(editor, start, end, selectedText) {
+                            const lines = selectedText.split('\n');
+                            const allLinesStartWithOrderedList = lines.every((line, index) => line.startsWith((index + 1) + '. '));
+
+                            let newText;
+                            if (allLinesStartWithOrderedList) {
+                                newText = lines.map((line, index) => line.startsWith((index + 1) + '. ') ? line.substring((index + 1).toString().length + 2) : line).join('\n');
+                            } else {
+                                newText = lines.map((line, index) => (index + 1) + '. ' + line).join('\n');
+                            }
+
+                            editor.value = editor.value.substring(0, start) + newText + editor.value.substring(end);
+                            setCaretPositionForEditor(editor, start, start + newText.length);
+                        }
+
+                        function toggleUnorderedList(editor, start, end, selectedText) {
+                            const lines = selectedText.split('\n');
+                            const allLinesStartWithBlockquote = lines.every(line => line.startsWith('- '));
+
+                            let newText;
+                            if (allLinesStartWithBlockquote) {
+                                newText = lines.map(line => line.startsWith('- ') ? line.substring(2) : line).join('\n');
+                            } else {
+                                newText = lines.map(line => '- ' + line).join('\n');
+                            }
+
+                            editor.value = editor.value.substring(0, start) + newText + editor.value.substring(end);
+                            setCaretPositionForEditor(editor, start, start + newText.length);
+                        }
+
+                        function toggleBlockquote(editor, start, end, selectedText) {
+                            const lines = selectedText.split('\n');
+                            const allLinesStartWithBlockquote = lines.every(line => line.startsWith('> '));
+
+                            let newText;
+                            if (allLinesStartWithBlockquote) {
+                                newText = lines.map(line => line.startsWith('> ') ? line.substring(2) : line).join('\n');
+                            } else {
+                                newText = lines.map(line => '> ' + line).join('\n');
+                            }
+
+                            editor.value = editor.value.substring(0, start) + newText + editor.value.substring(end);
+
+                            setCaretPositionForEditor(editor, start, start + newText.length);
+                        }
+
+                        function toggleLink(editor, start, end, selectedText) {
+                            const isValidURL = selectedText.startsWith('http://') || selectedText.startsWith('https://') || selectedText.startsWith('www.');
+
+                            if (isValidURL) {
+                                const newText = `[](${selectedText})`;
+                                editor.value = editor.value.substring(0, start) + newText + editor.value.substring(end);
+                                setCaretPositionForEditor(editor, start + 1, start + 1);
+                            } else {
+                                const newText = `[${selectedText}](url)`;
+                                editor.value = editor.value.substring(0, start) + newText + editor.value.substring(end);
+                                setCaretPositionForEditor(editor, start + newText.length - 4, start + newText.length - 1);
+                            }
+                        }
+
+                        function toggleBold(editor, start, end, selectedText) {
+                            if (selectedText.startsWith('**') && selectedText.endsWith('**')) {
+                                editor.value = editor.value.substring(0, start) + selectedText.slice(2, -2) + editor.value.substring(end);
+                                setCaretPositionForEditor(editor, start, end - 4);
+                            } else {
+                                editor.value = editor.value.substring(0, start) + '**' + selectedText + '**' + editor.value.substring(end);
+                                setCaretPositionForEditor(editor, start + 2, end + 2);
+                            }
+                        }
+
+                        function toggleItalic(editor, start, end, selectedText) {
+                            if (selectedText.startsWith('_') && selectedText.endsWith('_')) {
+                                editor.value = editor.value.substring(0, start) + selectedText.slice(1, -1) + editor.value.substring(end);
+                                setCaretPositionForEditor(editor, start, end - 2);
+                            } else {
+                                editor.value = editor.value.substring(0, start) + '_' + selectedText + '_' + editor.value.substring(end);
+                                setCaretPositionForEditor(editor, start + 1, end + 1);
+                            }
+                        }
+
+                        function autoExpandTextarea() {
+                            const textarea = document.getElementById('editor');
+                            textarea.style.height = 'auto';
+                            let newHeight = textarea.scrollHeight + 'px';
+
+                            textarea.style.height = newHeight;
+                        }
+
+                        function scrollToEditor() {
+                            const editor = document.getElementById('editor');
+                            const parent = editor.parentElement;
+                            const editorRect = editor.getBoundingClientRect();
+                            const parentRect = parent.getBoundingClientRect();
+                            const viewHeight = Math.max(document.documentElement.clientHeight, window.innerHeight);
+
+
+                            const isEditorFullyVisibleInParent = (
+                                editorRect.top >= parentRect.top &&
+                                editorRect.bottom <= parentRect.bottom
+                            );
+
+                            if (!isEditorFullyVisibleInParent) {
+                                window.scrollTo(0, document.body.scrollHeight);
+                            }
+                        }
+
+                        function uploadImages(event) {
+                            event.preventDefault();
+
+                            var files = event.target.files;
+                            var editor = document.getElementById('editor');
+                            var insertPosition = editor.selectionStart || 0;
+
+                            var items = Array.from(files).map(file => ({
+                                kind: 'file',
+                                type: file.type,
+                                getAsFile: () => file
+                            }));
+
+                            handleItems(items, insertPosition);
+                        }
+
+                        function setPreviewMode(isPreview) {
+                            const textareaInput = document.getElementById('textareaInput');
+                            const previewPane = document.getElementById('preview-pane');
+                            const toolbar = document.getElementById('toolbar');
+                            const writeButton = document.getElementById('writeBtn');
+                            const previewButton = document.getElementById('previewBtn');
+
+                            if (isPreview) {
+                                textareaInput.classList.remove('opacity-100', 'transition-opacity', 'duration-300', 'ease-in-out');
+                                textareaInput.classList.add('hidden', 'opacity-0', 'transition-opacity', 'duration-300', 'ease-in-out');
+                                previewPane.classList.remove('hidden');
+                                previewPane.classList.add('opacity-100', 'transition-opacity', 'duration-300', 'ease-in-out');
+                                toolbar.style.display = 'none';
+
+                                writeButton.classList.remove('font-semibold', 'text-neutral-800');
+                                writeButton.classList.add('text-neutral-500');
+                                previewButton.classList.add('font-semibold', 'text-neutral-800');
+                                previewButton.classList.remove('text-neutral-500');
+                            } else {
+                                textareaInput.classList.remove('hidden', 'opacity-0', 'transition-opacity', 'duration-300', 'ease-in-out');
+                                textareaInput.classList.add('opacity-100', 'transition-opacity', 'duration-300', 'ease-in-out');
+                                previewPane.classList.add('hidden');
+                                previewPane.classList.remove('opacity-100', 'transition-opacity', 'duration-300', 'ease-in-out');
+                                toolbar.style.display = 'flex';
+
+                                writeButton.classList.add('font-semibold', 'text-neutral-800');
+                                writeButton.classList.remove('text-neutral-500');
+                                previewButton.classList.remove('font-semibold', 'text-neutral-800');
+                                previewButton.classList.add('text-neutral-500');
+                            }
+                        }
+
+                        function submitMarkdownForm() {
+                            const scrollY = window.scrollY || document.documentElement.scrollTop;
+                            const previewPane = document.getElementById('preview-pane');
+                            const inputArea = document.getElementById('editor');
+
+                            if (inputArea.value.trim() === '') {
+                                previewPane.innerHTML = '<p class="text-gray-500">Nothing to preview</p>';
+                                setPreviewMode(true);
+                                return;
+                            } else {
+                                const formData = new FormData(document.getElementById('markdownForm'));
+                                fetch('/library/gemma2/preview_readme', {
+                                    method: 'POST',
+                                    body: formData
+                                })
+                                    .then(response => response.text())
+                                    .then(data => {
+                                        previewPane.innerHTML = data;
+                                        setPreviewMode(true);
+                                        window.scrollTo(0, scrollY);
+                                    })
+                                    .catch(error => {
+                                        console.error('Error:', error);
+                                        previewPane.innerHTML = '<p class="text-gray-500">Error loading preview</p>';
+                                        setPreviewMode(true);
+                                    });
+                            }
+                        }
+
+                        function handleEditor(event) {
+                            const editor = document.getElementById('editor');
+
+                            event.preventDefault();
+                            setPreviewMode(false);
+
+                            editor.focus();
+                            autoExpandTextarea();
+                        }
+
+                        document.addEventListener('DOMContentLoaded', function() {
+                            setPreviewMode(false);
+                            autoExpandTextarea();
+                            document.addEventListener('keydown', handleKeydownForAll);
+                        });
+                    </script>
+
+                </div>
+            </div>
+            <script>
+                var originalContent = ''
+
+                function edit() {
+                    var display = document.getElementById('display')
+                    var editorContainer = document.getElementById('editorContainer')
+                    var editor = document.getElementById('editor')
+                    var edit = document.getElementById('edit')
+                    var save = document.getElementById('save')
+                    var cancel = document.getElementById('cancel')
+
+                    originalContent = editor.value.trim();
+
+                    if (!edit) {
+                        return
+                    }
+
+                    setPreviewMode(false);
+
+                    display.classList.add('hidden');
+                    editorContainer.classList.remove('hidden');
+                    edit.classList.add('hidden');
+                    editor.classList.remove('hidden');
+                    save.classList.remove('hidden');
+                    cancel.classList.remove('hidden');
+                    editor.focus();
+
+                    var requiredHeight = editor.scrollHeight;
+                    editor.style.height = requiredHeight + 'px';
+                }
+
+                function save() {
+                    var save = document.getElementById('save')
+                    var editor = document.getElementById('editor')
+                    var editorContainer = document.getElementById('editorContainer')
+                    var display = document.getElementById('display')
+                    var edit = document.getElementById('edit')
+                    var cancel = document.getElementById('cancel')
+                    var noreadmeMessage = document.getElementById('display-noreadme-message')
+
+                    if (!save) {
+                        return
+                    }
+
+                    fetch('/api/namespaces/library/gemma2', {
+                        method: 'PATCH',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            overview: editor.value
+                        })
+                    })
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error('Failed to update overview')
+                            }
+                            return response.json()
+                        })
+                        .then((data) => {
+                            display.innerHTML = data.overview === '' ? '<div class="text-neutral-500 mt-2">No readme</div>' : data.overview
+                            display.classList.remove('hidden')
+                            editor.classList.add('hidden')
+                            editorContainer.classList.add('hidden')
+                            edit.classList.remove('hidden')
+                            cancel.classList.add('hidden')
+                            save.classList.add('hidden')
+                        })
+                        .catch(error => {
+                            console.error('Error during overview update:', error)
+                        })
+                }
+
+                function cancel() {
+                    var display = document.getElementById('display')
+                    var editor = document.getElementById('editor')
+                    var editorContainer = document.getElementById('editorContainer')
+                    var edit = document.getElementById('edit')
+                    var save = document.getElementById('save')
+                    var cancel = document.getElementById('cancel')
+
+                    if (!cancel) {
+                        return
+                    }
+
+                    if (editor.value !== originalContent) {
+                        if (!confirm('Are you sure you want to discard your unsaved changes?')) {
+                            return
+                        }
+                    }
+
+                    display.classList.remove('hidden')
+                    editor.classList.add('hidden')
+                    editorContainer.classList.add('hidden')
+                    edit.classList.remove('hidden')
+                    cancel.classList.add('hidden')
+                    save.classList.add('hidden')
+                    editor.value = originalContent;
+                }
+
+                function handleDragOver(event) {
+                    event.preventDefault();
+                }
+
+                function handleDrop(event) {
+                    event.preventDefault();
+
+                    const items = event.dataTransfer.items;
+                    handleItems(items, editor.selectionStart);
+                }
+
+                editor.addEventListener('paste', function (event) {
+                    const items = (event.clipboardData || event.originalEvent.clipboardData).items;
+                    let currentPosition = editor.selectionStart;
+
+                    handleItems(items, currentPosition);
+                });
+
+                function handleItems(items, insertPosition) {
+                    let promises = [];
+                    for (let i = 0; i < items.length; i++) {
+                        let item = items[i];
+                        if (item.kind !== 'file') {
+                            continue;
+                        }
+
+                        let file = item.getAsFile();
+                        let validImageTypes = ['image/png', 'image/jpeg', 'image/webp', 'image/gif', 'image/svg+xml'];
+
+                        if (!validImageTypes.includes(item.type)) {
+                            alert('We don\'t support this file type - try again with PNG, JPEG, WEBP, GIF, or SVG files.');
+                            continue;
+                        }
+
+                        if (file.size > 10 * 1024 * 1024) {
+                            alert('File size is too large. Maximum allowed size is 10MB');
+                            continue;
+                        }
+
+
+                        promises.push(Promise.resolve(file));
+                    }
+
+
+                    Promise.all(promises).then(files => {
+                        if (files.length > 0) {
+                            processFiles(files, insertPosition);
+                        }
+                    }).catch(error => {
+                        console.error('Error processing files:', error);
+                    });
+                }
+
+                function processFiles(files, insertPosition) {
+                    files.reduce((promise, file) => {
+                        return promise.then(() => {
+                            return uploadFile(file, insertPosition);
+                        }).then(insertLength => {
+                            insertPosition += insertLength;
+                        });
+                    }, Promise.resolve());
+                }
+
+                function uploadFile(file, cursorPosition) {
+                    return new Promise((resolve, reject) => {
+                        const uploadPlaceholder = `![Uploading ${file.name}...]()\n`;
+                        const editor = document.getElementById('editor');
+                        const formData = new FormData();
+                        const currentScrollTop = editor.scrollTop;
+                        const placeholderStart = cursorPosition;
+                        const placeholderEnd = placeholderStart + uploadPlaceholder.length;
+
+                        editor.value = editor.value.slice(0, cursorPosition) + uploadPlaceholder + editor.value.slice(cursorPosition);
+
+                        formData.append('file', file, file.name);
+
+                        fetch('/library/gemma2/upload_readme', {
+                            method: 'POST',
+                            body: formData
+                        })
+                            .then(response => {
+                                if (!response.ok) {
+                                    throw new Error('not able to upload file');
+                                }
+                                return response.json();
+                            })
+                            .then(data => {
+                                const newContent = `![${file.name}](${data.url})\n`;
+                                const start = editor.value.indexOf(uploadPlaceholder, cursorPosition);
+                                const end = start + uploadPlaceholder.length;
+                                const newCursorPosition = start + newContent.length;
+                                const extraTextStart = editor.value.indexOf(file.name, end);
+
+                                if (extraTextStart === -1) {
+
+                                    editor.value = editor.value.slice(0, start) + newContent + editor.value.slice(end);
+                                } else {
+                                    let extraTextEnd = extraTextStart + file.name.length;
+                                    if (extraTextEnd > editor.value.length) {
+                                        extraTextEnd = editor.value.length;
+                                    }
+
+                                    if (editor.value[extraTextEnd] === '\n') {
+                                        extraTextEnd += 1;
+                                    }
+
+
+                                    editor.value = editor.value.slice(0, start) + newContent + editor.value.slice(end).replace(editor.value.slice(extraTextStart, extraTextEnd), '');
+                                }
+
+                                editor.scrollTop = currentScrollTop;
+
+                                setCaretPosition(editor, newCursorPosition);
+                                resolve(newContent.length);
+                            })
+                            .catch(error => {
+                                console.error('Error during file upload:', error);
+                                alert('Failed to upload file: ' + error.message);
+
+                                editor.value = editor.value.slice(0, placeholderStart) + editor.value.slice(placeholderEnd);
+                                editor.scrollTop = currentScrollTop;
+
+                                reject(error);
+                            });
+                    });
+                }
+
+                function trimExtraText(editorValue, fileName, end) {
+                    const extraTextStart = editorValue.indexOf(fileName, end);
+                    if (extraTextStart === -1) {
+                        return editorValue;
+                    }
+
+                    let extraTextEnd = extraTextStart + fileName.length;
+                    if (editorValue[extraTextEnd] === '\n') {
+                        extraTextEnd += 1;
+                    }
+
+                    return editorValue.slice(0, extraTextStart) + editorValue.slice(extraTextEnd);
+                }
+
+                function setCaretPosition(element, position) {
+                    if (element.setSelectionRange) {
+                        element.focus();
+                        element.setSelectionRange(position, position);
+                    } else if (element.createTextRange) {
+                        const range = element.createTextRange();
+                        range.collapse(true);
+                        range.moveEnd('character', position);
+                        range.moveStart('character', position);
+                        range.select();
+                    }
+                }
+            </script>
+
+        </div>
+
+
+    </main>
+</div>
+
+<footer class="hidden md:flex inset-x-0 bottom-0 bg-white underline-offset-4 z-50">
+    <div class="w-full px-6 py-3.5 flex items-center justify-between">
+        <div class="text-xs text-neutral-500">© 2024 Ollama</div>
+        <div class="flex space-x-6 text-xs text-neutral-500">
+            <a href="/blog" class="hover:underline">Blog</a>
+            <a href="https://github.com/ollama/ollama/tree/main/docs" class="hover:underline">Docs</a>
+            <a href="https://github.com/ollama/ollama" class="hover:underline">GitHub</a>
+            <a href="https://discord.com/invite/ollama" class="hover:underline">Discord</a>
+            <a href="https://twitter.com/ollama" class="hover:underline">X (Twitter)</a>
+            <a href="https://lu.ma/ollama" class="hover:underline">Meetups</a>
+        </div>
+    </div>
+</footer>
+<footer class="inset-x-0 flex bottom-0 md:hidden py-4 bg-white">
+    <div class="flex flex-col items-center justify-center w-full">
+        <ul class="flex flex-wrap justify-center items-center text-sm text-neutral-500">
+            <li class="mx-2 my-1"><a href="/blog" class="hover:underline">Blog</a></li>
+            <li class="mx-2 my-1"><a href="https://github.com/ollama/ollama/tree/main/docs" class="hover:underline">Docs</a></li>
+            <li class="mx-2 my-1"><a href="https://github.com/ollama/ollama" class="hover:underline">GitHub</a></li>
+        </ul>
+        <ul class="flex flex-wrap justify-center items-center text-sm text-neutral-500">
+            <li class="mx-2 my-1"><a href="https://discord.com/invite/ollama" class="hover:underline">Discord</a></li>
+            <li class="mx-2 my-1"><a href="https://twitter.com/ollama" class="hover:underline">X (Twitter)</a></li>
+            <li class="mx-2 my-1"><a href="https://lu.ma/ollama" class="hover:underline">Meetups</a></li>
+        </ul>
+        <div class="flex items-center justify-center mt-2 text-neutral-500 text-sm">
+            © 2024 Ollama
+        </div>
+    </div>
+</footer>
+
+</div>
+<script>
+    function layerClickHandler() {
+
+        let preventSwapDueToMetaOrCtrlClick = false;
+
+        document.querySelectorAll('a[hx-get]').forEach(function(link) {
+            link.addEventListener('click', function(event) {
+                if (event.metaKey || event.ctrlKey) {
+
+                    preventSwapDueToMetaOrCtrlClick = true;
+
+
+                    let newTab = window.open(link.getAttribute('href'), '_blank');
+                    if (newTab) {
+                        newTab.focus();
+                    }
+                    event.preventDefault();
+                } else {
+                    event.preventDefault();
+                }
+            });
+        });
+
+        document.body.addEventListener('htmx:beforeSwap', function(event) {
+            if (preventSwapDueToMetaOrCtrlClick) {
+
+                event.preventDefault();
+
+                preventSwapDueToMetaOrCtrlClick = false;
+            }
+        });
+    }
+
+    function handleScrolling() {
+        document.body.addEventListener('htmx:afterSwap', function(event) {
+            window.scrollTo(0, 0);
+        });
+    }
+
+    window.addEventListener('popstate', function(event) {
+        layerClickHandler();
+        handleScrolling();
+
+        event.preventDefault();
+    });
+
+    document.addEventListener("DOMContentLoaded", function() {
+        layerClickHandler();
+        handleScrolling();
+    });
+</script>
+</body>
+</html>

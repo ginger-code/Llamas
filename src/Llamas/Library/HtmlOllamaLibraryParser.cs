@@ -51,15 +51,18 @@ internal static partial class HtmlOllamaLibraryParser
     public static ModelListing ParseListingNode(HtmlNode node, DateTimeOffset currentTime)
     {
         var name = node.Attributes["href"].Value.TrimStart('/');
-        var description = node.QuerySelector("div.flex > p:nth-child(1)").InnerText;
+        var description = node.QuerySelector("div.flex > p:nth-child(1)")?.InnerText ?? "";
         var tags = node.QuerySelectorAll("div.flex > div.flex > span")
             ?.Select(n => n.InnerText)
+            .Prepend("latest")
+            .Distinct()
+            .Order()
             .ToArray();
         var updated = ParseUpdatedTimeOffset(
             node.QuerySelector("div.flex > p.flex > span:last-child")
-                .InnerText.Replace(" ago", "")
+                ?.InnerText.Replace(" ago", "")
                 .Replace("Updated&nbsp;", "")
-                .Trim(),
+                .Trim() ?? "0 seconds",
             currentTime
         );
         return new ModelListing(

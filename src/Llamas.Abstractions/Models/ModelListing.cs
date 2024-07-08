@@ -1,5 +1,6 @@
 using System;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 
 namespace Llamas.Models;
 
@@ -22,7 +23,7 @@ public sealed record ModelListing
         Name = name;
         Description = description;
         Updated = updated;
-        ModelTags = modelTags ?? [];
+        ModelTags = modelTags ?? ["latest"];
     }
 
     /// <summary>

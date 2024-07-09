@@ -72,6 +72,14 @@ sealed class HtmlOllamaLibraryParserTests
     }
 
     [Test]
+    public async Task ParseFinalPageNumber()
+    {
+        var html = await File.ReadAllTextAsync("../../../listing-page.html");
+        var finalPage = Parser.ParseFinalPageNumber(html);
+        Assert.That(finalPage, Is.EqualTo(34));
+    }
+
+    [Test]
     public async Task ParseModelDetails()
     {
         var html = await File.ReadAllTextAsync("../../../listing-detail.html");

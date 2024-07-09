@@ -22,7 +22,8 @@ internal static partial class HtmlOllamaLibraryParser
     {
         var doc = new HtmlDocument();
         doc.LoadHtml(html);
-        var anchor = doc.QuerySelector("ul.inline-flex > li:nth-last-child(2) > a:nth-child(1)");
+        var anchors = doc.QuerySelectorAll("ul.inline-flex > li");
+        var anchor = anchors[^2].QuerySelector("a:nth-child(1)");
         if (anchor is null)
             throw new NullReferenceException(
                 "No matching anchor found to determine final page number"

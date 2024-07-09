@@ -22,7 +22,7 @@ public sealed record ModelListingDetails
         string name,
         string description,
         string version,
-        DateTimeOffset updated,
+        DateOnly updated,
         string[] modelTags,
         IReadOnlyDictionary<string, string> fileSizes,
         string readmeMarkup
@@ -55,7 +55,7 @@ public sealed record ModelListingDetails
     /// <summary>
     /// Approximate time model was last updated
     /// </summary>
-    public required DateTimeOffset Updated { get; init; }
+    public required DateOnly Updated { get; init; }
 
     /// <summary>
     /// Array of tags for the model

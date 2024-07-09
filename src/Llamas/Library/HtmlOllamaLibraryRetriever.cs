@@ -4,7 +4,6 @@ using System.Net.Http;
 using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
-using HtmlAgilityPack;
 using Llamas.Models;
 using Parser = Llamas.Library.HtmlOllamaLibraryParser;
 
@@ -39,10 +38,8 @@ public class HtmlOllamaLibraryRetriever : IOllamaLibraryRetriever
         var page = 1;
         var html = await RetrievePagedListingHtml(page, cancellationToken).ConfigureAwait(false);
         var currentTime = DateTimeOffset.Now;
-        var doc = new HtmlDocument();
-        doc.LoadHtml(html);
-        var finalPage = Parser.ParseFinalPageNumber(doc);
-        foreach (var listing in Parser.ParseListingHtml(doc, currentTime))
+        var finalPage = Parser.ParseFinalPageNumber(html);
+        foreach (var listing in Parser.ParseListingHtml(html, currentTime))
         {
             yield return listing;
         }
@@ -52,8 +49,7 @@ public class HtmlOllamaLibraryRetriever : IOllamaLibraryRetriever
             page++;
             html = await RetrievePagedListingHtml(page, cancellationToken).ConfigureAwait(false);
             currentTime = DateTimeOffset.Now;
-            doc.LoadHtml(html);
-            foreach (var listing in Parser.ParseListingHtml(doc, currentTime))
+            foreach (var listing in Parser.ParseListingHtml(html, currentTime))
             {
                 yield return listing;
             }

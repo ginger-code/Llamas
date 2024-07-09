@@ -16,9 +16,11 @@ internal static partial class HtmlOllamaLibraryParser
     /// <summary>
     /// Parse the final page number from the listing HTML
     /// </summary>
-    public static int ParseFinalPageNumber(HtmlDocument html)
+    public static int ParseFinalPageNumber(string html)
     {
-        var anchor = html.QuerySelector("ul.inline-flex > li:nth-last-child(2) > a:nth-child(1)");
+        var doc = new HtmlDocument();
+        doc.LoadHtml(html);
+        var anchor = doc.QuerySelector("ul.inline-flex > li:nth-last-child(2) > a:nth-child(1)");
         if (anchor is null)
             throw new NullReferenceException(
                 "No matching anchor found to determine final page number"
@@ -34,11 +36,13 @@ internal static partial class HtmlOllamaLibraryParser
     /// Parse the listing HTML to retrieve a collection of <see cref="ModelListing" /> instances
     /// </summary>
     public static IEnumerable<ModelListing> ParseListingHtml(
-        HtmlDocument html,
+        string html,
         DateTimeOffset currentTime
     )
     {
-        var listingNodes = html.QuerySelectorAll("ul.grid > li.flex > a:nth-child(1)");
+        var doc = new HtmlDocument();
+        doc.LoadHtml(html);
+        var listingNodes = doc.QuerySelectorAll("ul.grid > li.flex > a:nth-child(1)");
         foreach (var listingNode in listingNodes)
         {
             yield return ParseListingNode(listingNode, currentTime);
@@ -83,31 +87,33 @@ internal static partial class HtmlOllamaLibraryParser
     {
         var doc = new HtmlDocument();
         doc.LoadHtml(html);
-        var name = doc.QuerySelector("h1.flex > a.font-medium").InnerText;
-        var description = doc.QuerySelector("h2.break-words").InnerText;
-        var version = doc.QuerySelector("div.px-4 > p:last-child").InnerText;
+        var name = doc.QuerySelector("h1.flex > a.font-medium").InnerText.Trim();
+        var description = doc.QuerySelector("h2.break-words")?.InnerText.Trim() ?? "";
+        var versionStr = doc.QuerySelector("div.px-4 > p:last-child")?.InnerText.Trim() ?? "";
+        var version = VersionRegex().Match(versionStr).Value;
         var updated = ParseUpdatedTimeOffset(
-            doc.QuerySelector(@"p.sm\:hidden")
+            doc.QuerySelector("p.hidden")
                 .InnerText.Replace(" ago", "")
                 .Replace("Updated&nbsp;", "")
                 .Trim(),
             currentTime
         );
         var fileSizes = doc.QuerySelectorAll("#primary-tags > a")
+            .Union(doc.QuerySelectorAll("#secondary-tags > a"))
             .Select(a =>
             {
-                var tag = a.QuerySelector("div > span").InnerText;
-                var size = a.QuerySelector("span").InnerText;
+                var tag = a.QuerySelector("div > span").InnerText.Trim();
+                var size = a.QuerySelector("span.text-xs").InnerText.Trim();
                 return (tag, size);
             })
             .ToDictionary();
         var tags = fileSizes.Keys.ToArray();
-        var readme = doc.QuerySelector("#display").InnerHtml;
+        var readme = doc.QuerySelector("#display")?.InnerHtml.Trim() ?? "";
         return new ModelListingDetails(
             name,
             description,
             version,
-            updated,
+            new DateOnly(updated.Year, updated.Month, updated.Day),
             tags,
             fileSizes,
             readme
@@ -164,4 +170,7 @@ internal static partial class HtmlOllamaLibraryParser
 
     [GeneratedRegex(@"\d+")]
     private static partial Regex NumberRegex();
+
+    [GeneratedRegex(@"(\S+)")]
+    private static partial Regex VersionRegex();
 }

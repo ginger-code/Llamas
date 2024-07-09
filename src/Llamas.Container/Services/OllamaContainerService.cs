@@ -11,7 +11,7 @@ namespace Llamas.Services;
 /// </summary>
 /// <param name="containerConfiguration">Configuration used to set up the container</param>
 /// <param name="logger">Logger</param>
-public class OllamaContainerService(
+public sealed class OllamaContainerService(
     OllamaContainerConfiguration containerConfiguration,
     ILogger<OllamaContainerService>? logger
 ) : IHostedService

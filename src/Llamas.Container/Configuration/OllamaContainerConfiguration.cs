@@ -5,7 +5,7 @@ namespace Llamas.Configuration;
 /// <summary>
 /// Configuration for hosted ollama containers
 /// </summary>
-public class OllamaContainerConfiguration
+public sealed class OllamaContainerConfiguration
 {
     /// Create a new instance of OllamaContainerConfiguration
     [SetsRequiredMembers]

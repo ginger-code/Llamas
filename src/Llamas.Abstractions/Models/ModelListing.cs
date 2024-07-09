@@ -1,6 +1,5 @@
 using System;
 using System.Diagnostics.CodeAnalysis;
-using System.Linq;
 
 namespace Llamas.Models;
 
@@ -9,11 +8,6 @@ namespace Llamas.Models;
 /// </summary>
 public sealed record ModelListing
 {
-    /// <summary>
-    /// Initializes a new instance of the <see cref="T:Llamas.Models.ModelListing" /> class.
-    /// </summary>
-    public ModelListing() { }
-
     /// <summary>
     /// Initializes a new instance of the <see cref="T:Llamas.Models.ModelListing" /> class.
     /// </summary>

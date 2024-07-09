@@ -5,7 +5,7 @@ namespace Llamas.Responses;
 /// <summary>
 /// A response containing generated embedding weights
 /// </summary>
-public record GenerateEmbeddingsResponse
+public sealed record GenerateEmbeddingsResponse
 {
     /// Generated embedding weights
     [JsonPropertyName("embedding"), JsonRequired]

@@ -6,7 +6,7 @@ namespace Llamas.Models;
 /// <summary>
 /// A model available locally
 /// </summary>
-public record LocalModel
+public sealed record LocalModel
 {
     /// Name of the model
     [JsonPropertyName("name"), JsonRequired]

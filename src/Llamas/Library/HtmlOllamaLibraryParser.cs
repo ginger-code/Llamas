@@ -10,6 +10,8 @@ namespace Llamas.Library;
 
 /// <summary>
 /// Handles parsing of HTML from https://ollama.com/library
+/// This class is prone to breaking changes to the HTML structure.
+/// Working as of 2024-07-09
 /// </summary>
 internal static partial class HtmlOllamaLibraryParser
 {

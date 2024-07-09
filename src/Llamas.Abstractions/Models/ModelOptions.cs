@@ -5,7 +5,7 @@ namespace Llamas.Models;
 /// <summary>
 /// Parameters to be passed to the model, overriding values set in Modelfile
 /// </summary>
-public record ModelOptions
+public sealed record ModelOptions
 {
     /// <summary>
     /// Create a ModelParameters instance

@@ -12,11 +12,6 @@ public sealed record ModelListingDetails
     /// <summary>
     /// Initializes a new instance of the <see cref="T:Llamas.Models.ModelListingDetails" /> class.
     /// </summary>
-    public ModelListingDetails() { }
-
-    /// <summary>
-    /// Initializes a new instance of the <see cref="T:Llamas.Models.ModelListingDetails" /> class.
-    /// </summary>
     [SetsRequiredMembers]
     public ModelListingDetails(
         string name,

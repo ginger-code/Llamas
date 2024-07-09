@@ -6,7 +6,7 @@ namespace Llamas.Requests;
 /// <summary>
 /// Request to push a local model to a remote source
 /// </summary>
-public record PushModelRequest
+public sealed record PushModelRequest
 {
     /// <summary>
     /// Request to push a local model to a remote source

@@ -14,12 +14,12 @@ public interface IOllamaLibraryPersistence
     /// <summary>
     /// Queryable root for model listings
     /// </summary>
-    public IQueryable<ModelListing> ModelListings { get; protected set; }
+    public IQueryable<ModelListing> ModelListings { get; }
 
     /// <summary>
     /// Queryable root for model listing details
     /// </summary>
-    public IQueryable<ModelListingDetails> ModelListingDetails { get; protected set; }
+    public IQueryable<ModelListingDetails> ModelListingDetails { get; }
 
     /// <summary>
     /// Deletes a model listing from the persistence store
@@ -87,7 +87,7 @@ public interface IOllamaLibraryPersistence
     /// <param name="listing">The listing to add or update</param>
     /// <param name="cancellationToken">Cancellation token</param>
     /// <returns>The added/updated listing or null if unsuccessful</returns>
-    Task<ModelListing?> AddOrUpdateModelListings(
+    Task AddOrUpdateModelListings(
         ModelListing listing,
         CancellationToken cancellationToken = default
     ) => AddOrUpdateModelListings([listing], cancellationToken);
@@ -98,7 +98,7 @@ public interface IOllamaLibraryPersistence
     /// <param name="listings">The listings collection to add or update</param>
     /// <param name="cancellationToken">Cancellation token</param>
     /// <returns>The added/updated listing or null if unsuccessful</returns>
-    Task<ModelListing?> AddOrUpdateModelListings(
+    Task AddOrUpdateModelListings(
         IEnumerable<ModelListing> listings,
         CancellationToken cancellationToken = default
     );
@@ -109,7 +109,7 @@ public interface IOllamaLibraryPersistence
     /// <param name="details">The listing details to add or update</param>
     /// <param name="cancellationToken">Cancellation token</param>
     /// <returns>The added/updated details or null if unsuccessful</returns>
-    Task<ModelListingDetails?> AddOrUpdateModelListingDetails(
+    Task AddOrUpdateModelListingDetails(
         ModelListingDetails details,
         CancellationToken cancellationToken = default
     ) => AddOrUpdateModelListingDetails([details], cancellationToken);
@@ -120,7 +120,7 @@ public interface IOllamaLibraryPersistence
     /// <param name="details">The listing details collection to add or update</param>
     /// <param name="cancellationToken">Cancellation token</param>
     /// <returns>The added/updated details or null if unsuccessful</returns>
-    Task<ModelListingDetails?> AddOrUpdateModelListingDetails(
+    Task AddOrUpdateModelListingDetails(
         IEnumerable<ModelListingDetails> details,
         CancellationToken cancellationToken = default
     );

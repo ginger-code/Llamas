@@ -12,7 +12,7 @@ namespace Llamas.Library;
 /// <summary>
 /// Ollama library retriever implementation that parses HTML from https://ollama.com/library
 /// </summary>
-public sealed class HtmlOllamaLibraryRetriever : IOllamaLibraryRetriever
+internal sealed class HtmlOllamaLibraryRetriever : IOllamaLibraryRetriever
 {
     /// <summary>
     /// Injected client for making HTTP requests

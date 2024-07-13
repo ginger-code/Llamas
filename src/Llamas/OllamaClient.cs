@@ -58,7 +58,13 @@ public sealed class OllamaClient : IOllamaClient
         IOllamaLibraryPersistence? libraryPersistence = null
     )
     {
-        ConfigureClient(httpClient, clientConfiguration, libraryRetriever, libraryPersistence);
+        ClientConfiguration = clientConfiguration;
+        HttpClient = httpClient ?? new HttpClient();
+        HttpClient.BaseAddress = ClientConfiguration.Uri;
+        Blobs = new OllamaBlobClient(HttpClient);
+        var retriever = libraryRetriever ?? new HtmlOllamaLibraryRetriever(HttpClient);
+        var persistence = libraryPersistence ?? new NullOllamaLibraryPersistence();
+        Library = new OllamaLibraryRepository(retriever, persistence);
     }
 
     /// <summary>
@@ -74,36 +80,12 @@ public sealed class OllamaClient : IOllamaClient
         IOllamaLibraryRetriever? libraryRetriever = null,
         IOllamaLibraryPersistence? libraryPersistence = null
     )
-    {
-        ConfigureClient(
-            httpClientFactory.CreateClient(),
+        : this(
             clientConfiguration,
+            httpClientFactory.CreateClient(),
             libraryRetriever,
             libraryPersistence
-        );
-    }
-
-    [
-        MemberNotNull(nameof(ClientConfiguration)),
-        MemberNotNull(nameof(HttpClient)),
-        MemberNotNull(nameof(Blobs)),
-        MemberNotNull(nameof(Library))
-    ]
-    private void ConfigureClient(
-        HttpClient? httpClient,
-        OllamaClientConfiguration clientConfiguration,
-        IOllamaLibraryRetriever? libraryRetriever = null,
-        IOllamaLibraryPersistence? libraryPersistence = null
-    )
-    {
-        ClientConfiguration = clientConfiguration;
-        HttpClient = httpClient ?? new HttpClient();
-        HttpClient.BaseAddress = ClientConfiguration.Uri;
-        Blobs = new OllamaBlobClient(HttpClient);
-        var retriever = libraryRetriever ?? new HtmlOllamaLibraryRetriever(HttpClient);
-        var persistence = libraryPersistence ?? new NullOllamaLibraryPersistence();
-        Library = new OllamaLibraryRepository(retriever, persistence);
-    }
+        ) { }
 
     #endregion
 

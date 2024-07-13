@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 using Llamas.Models;
 
@@ -23,24 +24,42 @@ public interface IOllamaLibraryRepository
     /// Enumerate all models available to pull from the persistence store, optionally refreshing the cache if necessary
     /// </summary>
     /// <param name="refreshCache">If true, update cached model listings from the internet</param>
-    IAsyncEnumerable<ModelListing> EnumerateModelListings(bool refreshCache = false)
+    /// <param name="cancellationToken">Cancellation token</param>
+    IAsyncEnumerable<ModelListing> EnumerateModelListings(
+        bool refreshCache = false,
+        CancellationToken cancellationToken = default
+    )
     {
-        return refreshCache ? EnumerateAndCacheModelListings() : EnumerateModelListingsCached();
+        return refreshCache
+            ? EnumerateAndCacheModelListings(cancellationToken)
+            : EnumerateModelListingsCached(cancellationToken);
     }
 
     /// <summary>
-    /// Enumerate all models available to pull from the persistence store, refreshing the cache with new or de-listed models
+    /// Enumerate all models available to pull from the persistence store, refreshing the cache with new models
     /// </summary>
-    IAsyncEnumerable<ModelListing> EnumerateAndCacheModelListings();
+    /// <param name="cancellationToken">Cancellation token</param>
+
+    IAsyncEnumerable<ModelListing> EnumerateAndCacheModelListings(
+        CancellationToken cancellationToken = default
+    );
 
     /// <summary>
     /// Enumerate all models available to pull from the persistence store from the cached persistence store
     /// </summary>
-    IAsyncEnumerable<ModelListing> EnumerateModelListingsCached();
+    /// <param name="cancellationToken">Cancellation token</param>
+
+    IAsyncEnumerable<ModelListing> EnumerateModelListingsCached(
+        CancellationToken cancellationToken = default
+    );
 
     /// <summary>
     /// Retrieve details about a model available to pull from the persistence store
     /// </summary>
     /// <param name="modelName">Name of the model for which details should be retrieved</param>
-    Task<ModelListingDetails> GetModelListingDetails(string modelName);
+    /// <param name="cancellationToken">Cancellation token</param>
+    Task<ModelListingDetails> GetModelListingDetails(
+        string modelName,
+        CancellationToken cancellationToken = default
+    );
 }

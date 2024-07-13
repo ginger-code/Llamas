@@ -1,5 +1,6 @@
 using System;
 using Llamas.Configuration;
+using Llamas.Library;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Llamas.Services;
@@ -10,9 +11,16 @@ namespace Llamas.Services;
 public static class ServiceCollectionExtensions
 {
     /// <summary>
+    /// Adds in-memory cache for ollama model library retrieval
+    /// </summary>
+    /// <param name="serviceCollection">Service collection to modify</param>
+    public static void AddOllamaLibraryInMemoryCache(this IServiceCollection serviceCollection) =>
+        serviceCollection.AddSingleton<InMemoryOllamaLibraryPersistence>();
+
+    /// <summary>
     /// Add an ollama client to the service collection, relying on the <see cref="OllamaClientConfiguration" /> added elsewhere to configure the client
     /// </summary>
-    /// <param name="serviceCollection"></param>
+    /// <param name="serviceCollection">Service collection to modify</param>
     public static void AddOllamaClient(this IServiceCollection serviceCollection) =>
         serviceCollection.AddSingleton<OllamaClient>();
 

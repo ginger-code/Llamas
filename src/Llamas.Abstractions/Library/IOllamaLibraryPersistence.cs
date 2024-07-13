@@ -7,7 +7,7 @@ using Llamas.Models;
 namespace Llamas.Library;
 
 /// <summary>
-/// An implementation of a method for caching information about models available to pull
+/// An in-memory implementation of a method for caching information about models available to pull
 /// </summary>
 public interface IOllamaLibraryPersistence
 {

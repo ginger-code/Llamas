@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using Llamas.Enums;
+using Llamas.Library;
 using Llamas.Models;
 using Llamas.Requests;
 using Llamas.Responses;
@@ -21,7 +22,7 @@ public interface IOllamaClient
     /// <summary>
     /// Model library functionality
     /// </summary>
-    IOllamaLibraryClient? Library { get; }
+    IOllamaLibraryRepository? Library { get; }
 
     /// <summary>
     /// Check whether the ollama server is online and responding

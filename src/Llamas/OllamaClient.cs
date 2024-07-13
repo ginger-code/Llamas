@@ -1,10 +1,12 @@
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Net;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 using Llamas.Configuration;
 using Llamas.Enums;
+using Llamas.Library;
 using Llamas.Models;
 using Llamas.Requests;
 using Llamas.Responses;
@@ -21,22 +23,22 @@ public sealed class OllamaClient : IOllamaClient
     /// <summary>
     /// Configuration to enable networking and more
     /// </summary>
-    private OllamaClientConfiguration ClientConfiguration { get; }
+    private OllamaClientConfiguration ClientConfiguration { get; set; }
 
     /// <summary>
     /// Injected or created <see cref="System.Net.Http.HttpClient"/> to be used for requests
     /// </summary>
-    private HttpClient HttpClient { get; }
+    private HttpClient HttpClient { get; set; }
 
     /// <summary>
     /// Blob functionality
     /// </summary>
-    public IOllamaBlobClient Blobs { get; }
+    public IOllamaBlobClient Blobs { get; private set; }
 
     /// <summary>
-    /// Model library functionality
+    /// Functionality for retrieving information about models available to pull
     /// </summary>
-    public IOllamaLibraryClient? Library { get; } = null;
+    public IOllamaLibraryRepository Library { get; private set; }
 
     #endregion
 
@@ -47,15 +49,16 @@ public sealed class OllamaClient : IOllamaClient
     /// </summary>
     /// <param name="clientConfiguration">ollama host server configuration</param>
     /// <param name="httpClient">Injected HttpClient</param>
+    /// <param name="libraryRetriever">Optional injected model library retriever</param>
+    /// <param name="libraryPersistence">Optional injected model library persistence</param>
     public OllamaClient(
         OllamaClientConfiguration clientConfiguration,
-        HttpClient? httpClient = null
+        HttpClient? httpClient = null,
+        IOllamaLibraryRetriever? libraryRetriever = null,
+        IOllamaLibraryPersistence? libraryPersistence = null
     )
     {
-        ClientConfiguration = clientConfiguration;
-        HttpClient = httpClient ?? new HttpClient();
-        HttpClient.BaseAddress = ClientConfiguration.Uri;
-        Blobs = new OllamaBlobClient(HttpClient);
+        ConfigureClient(httpClient, clientConfiguration, libraryRetriever, libraryPersistence);
     }
 
     /// <summary>
@@ -63,15 +66,43 @@ public sealed class OllamaClient : IOllamaClient
     /// </summary>
     /// <param name="clientConfiguration">ollama host server configuration</param>
     /// <param name="httpClientFactory">Injected IHttpClientFactory</param>
+    /// <param name="libraryRetriever">Optional injected model library retriever</param>
+    /// <param name="libraryPersistence">Optional injected model library persistence</param>
     public OllamaClient(
         OllamaClientConfiguration clientConfiguration,
-        IHttpClientFactory httpClientFactory
+        IHttpClientFactory httpClientFactory,
+        IOllamaLibraryRetriever? libraryRetriever = null,
+        IOllamaLibraryPersistence? libraryPersistence = null
+    )
+    {
+        ConfigureClient(
+            httpClientFactory.CreateClient(),
+            clientConfiguration,
+            libraryRetriever,
+            libraryPersistence
+        );
+    }
+
+    [
+        MemberNotNull(nameof(ClientConfiguration)),
+        MemberNotNull(nameof(HttpClient)),
+        MemberNotNull(nameof(Blobs)),
+        MemberNotNull(nameof(Library))
+    ]
+    private void ConfigureClient(
+        HttpClient? httpClient,
+        OllamaClientConfiguration clientConfiguration,
+        IOllamaLibraryRetriever? libraryRetriever = null,
+        IOllamaLibraryPersistence? libraryPersistence = null
     )
     {
         ClientConfiguration = clientConfiguration;
-        HttpClient = httpClientFactory.CreateClient();
+        HttpClient = httpClient ?? new HttpClient();
         HttpClient.BaseAddress = ClientConfiguration.Uri;
         Blobs = new OllamaBlobClient(HttpClient);
+        var retriever = libraryRetriever ?? new HtmlOllamaLibraryRetriever(HttpClient);
+        var persistence = libraryPersistence ?? new NullOllamaLibraryPersistence();
+        Library = new OllamaLibraryRepository(retriever, persistence);
     }
 
     #endregion

@@ -36,6 +36,16 @@ public interface IOllamaLibraryRepository
     }
 
     /// <summary>
+    /// Update the cache with new models, optionally removing models that are no longer listed on the web (default is true)
+    /// </summary>
+    /// <param name="removeUnlistedModels">If true, remove all models from persistence which no longer have a public listing</param>
+    /// <param name="cancellationToken">Cancellation token</param>
+    public Task UpdateCache(
+        bool removeUnlistedModels = true,
+        CancellationToken cancellationToken = default
+    );
+
+    /// <summary>
     /// Enumerate all models available to pull from the persistence store, refreshing the cache with new models
     /// </summary>
     /// <param name="cancellationToken">Cancellation token</param>
